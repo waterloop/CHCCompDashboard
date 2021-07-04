@@ -2,7 +2,7 @@
 #define BMSMODEL_H
 
 #include <QObject>
-#include <podstate.h>
+#include "podstate.h"
 
 #define INITIAL_BATPACK_CURRENT -1.0f
 #define BATPACK_CURRENT_TIMEOUT_MS (1000*7) // 7 seconds

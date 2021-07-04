@@ -1,4 +1,4 @@
-#include "bmsmodel.h"
+#include "inc/bmsmodel.h"
 
 BmsModel::BmsModel(QObject* parent)
     : QObject(parent),

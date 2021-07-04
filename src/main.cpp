@@ -1,12 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "guicontroller.h"
-#include "podcontroller.h"
+#include "inc/guicontroller.h"
+#include "inc/podcontroller.h"
+#include "inc/common.h"
+#include "inc/networkcontroller.h"
 
-/* Singleton Pod Object which manages
- * the state of the pod via various models
- */
-PodController* pod;
+PodController *pod;
+NetworkController *network_controller;
 
 /*
  * This is the entry point for the application.
@@ -24,8 +24,14 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GuiController guiController(&engine);
     pod = new PodController();
+    network_controller = new NetworkController();
 
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
+#ifndef DEV_SANDBOX
+    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
+#else
+    const QUrl url(QStringLiteral("qrc:/qml/dev.qml"));
+#endif
+
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

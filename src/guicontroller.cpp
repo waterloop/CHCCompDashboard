@@ -1,8 +1,8 @@
-#include "guicontroller.h"
-#include "podcontroller.h"
+#include "inc/guicontroller.h"
+#include "inc/podcontroller.h"
+#include "inc/networkcontroller.h"
 #include <QQmlContext>
-
-extern PodController* pod;
+#include "inc/common.h"
 
 GuiController::GuiController(
         QQmlApplicationEngine *engine,
@@ -22,4 +22,5 @@ GuiController::GuiController(
 void GuiController::loadBackendControllers()
 {
     m_engine->rootContext()->setContextProperty("pod", pod);
+    m_engine->rootContext()->setContextProperty("network", network_controller);
 }
