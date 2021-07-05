@@ -7,11 +7,13 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        src/bmsmodel.cpp \
-        src/guicontroller.cpp \
-        src/main.cpp \
-        src/networkcontroller.cpp \
-        src/podcontroller.cpp \
+    src/networkcontroller/relayudpcontroller.cpp \
+    src/bmsmodel.cpp \
+    src/guicontroller.cpp \
+    src/main.cpp \
+    src/networkcontroller.cpp \
+    src/networkcontroller/relaytcpcontroller.cpp \
+    src/podcontroller.cpp \
 
 RESOURCES += qml.qrc
 
@@ -33,6 +35,8 @@ HEADERS += \
     inc/guicontroller.h \
     inc/networkcontroller.h \
     inc/networkcontroller.h \
+    inc/networkcontroller/relaytcpcontroller.h \
+    inc/networkcontroller/relayudpcontroller.h \
     inc/podcontroller.h \
     inc/podstate.h \
 
