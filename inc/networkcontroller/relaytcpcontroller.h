@@ -3,17 +3,30 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QtConcurrent/QtConcurrent>
+#include <QString>
 #include "../common.h"
+
+struct RelayTcpControllerConfig {
+    port_t port;
+    QString host;
+};
 
 class RelayTcpController : public QObject
 {
     Q_OBJECT
 public:
-    explicit RelayTcpController(QObject* parent=nullptr);
+    explicit RelayTcpController(
+                QObject* parent=nullptr,
+                struct RelayTcpControllerConfig config={
+                    RELAY_BOARD_DEFAULT_TCP_PORT,
+                    QString(DEV_HOST)
+                }
+            );
     virtual ~RelayTcpController();
 
 public slots:
     void slot_sendHandshake();
+    void slot_sendMockCanRequest();
 
 signals:
     /**
@@ -32,7 +45,15 @@ signals:
 
 
 private:
+    struct RelayTcpControllerConfig m_config;
     QTcpSocket m_relayTcpSocket;
+    QByteArray m_message; // Message to be sent to the board on connection
+
+    /**
+     * @brief connectToBoard
+     * Open the TCP port to the relay board
+     */
+    void connectToBoard();
 
 private slots:
     /**

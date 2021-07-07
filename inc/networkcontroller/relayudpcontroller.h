@@ -24,10 +24,23 @@ public slots:
      */
     void slot_connectToRelayBoard(port_t udp_port);
 
+signals:
+    void sig_dataReceived(QByteArray data);
 
 private:
-    QUdpSocket m_relayUdpSocket;
+    QUdpSocket m_relayBoardUdpSocket;
+    port_t m_relayBoardUdpPort;
+    QHostAddress m_relayBoardAddress;
 
+    void sendMessage(const QByteArray message);
+
+private slots:
+    /**
+     * @brief slot_handleRelayUdpSocketReadyRead
+     * Called Each time a datagram is recieved on the
+     * socket
+     */
+    void slot_handleRelayUdpSocketReadyRead();
 };
 
 #endif // RELAYUDPCONTROLLER_H

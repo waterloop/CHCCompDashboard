@@ -1,9 +1,11 @@
 #include "inc/networkcontroller.h"
 #include <QDebug>
 
-RelayTcpController::RelayTcpController(QObject* parent)
+RelayTcpController::RelayTcpController(QObject* parent, struct RelayTcpControllerConfig config)
     : QObject(parent),
+      m_config(config),
       m_relayTcpSocket(this)
+
 {
     connect(&m_relayTcpSocket, &QAbstractSocket::errorOccurred,
             this, &RelayTcpController::slot_handleRelayTcpSocketErrorOccured);
@@ -27,12 +29,24 @@ RelayTcpController::~RelayTcpController()
 
 void RelayTcpController::slot_sendHandshake()
 {
+    m_message = RELAY_BOARD_HANDSHAKE_REQUEST;
+    connectToBoard();
+}
+
+void RelayTcpController::slot_sendMockCanRequest()
+{
+    m_message = RELAY_BOARD_MOCK_CAN_REQUEST;
+    connectToBoard();
+}
+
+void RelayTcpController::connectToBoard()
+{
 #ifdef DEV_SANDBOX
     qDebug() << "Connecting to Relay board";
 #endif
     m_relayTcpSocket.connectToHost(
-                DEV_HOST,
-                RELAY_BOARD_DEFAULT_TCP_PORT,
+                m_config.host,
+                m_config.port,
                 QIODevice::ReadWrite,
                 QAbstractSocket::IPv4Protocol);
 }
@@ -59,8 +73,7 @@ void RelayTcpController::slot_handleRelayTcpSocketErrorOccured(
 void RelayTcpController::slot_handleRelayTcpSocketConnected()
 {
     /* When Connected, Send the Handshake to initiate communication */
-    QByteArray handshake(RELAY_BOARD_HANDSHAKE_REQUEST);
-    m_relayTcpSocket.write(handshake);
+    m_relayTcpSocket.write(m_message);
 }
 
 void RelayTcpController::slot_handleRelayTcpSocketReadyRead()
