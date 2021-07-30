@@ -6,7 +6,9 @@
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 #include <QHostAddress>
-#include "../common.h"
+#include "common.h"
+
+using common::port_t;
 
 class RelayUdpController : public QObject
 {

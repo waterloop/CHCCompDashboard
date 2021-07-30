@@ -1,8 +1,8 @@
-#include "inc/guicontroller.h"
-#include "inc/podcontroller.h"
-#include "inc/networkcontroller.h"
+#include "guicontroller.h"
+#include "podcontroller.h"
+#include "networkcontroller/networkcontroller.h"
 #include <QQmlContext>
-#include "inc/common.h"
+#include "common.h"
 
 GuiController::GuiController(
         QQmlApplicationEngine *engine,
@@ -23,4 +23,20 @@ void GuiController::loadBackendControllers()
 {
     m_engine->rootContext()->setContextProperty("pod", pod);
     m_engine->rootContext()->setContextProperty("network", network_controller);
+}
+
+void GuiController::loadBackendModels()
+{
+    m_engine->rootContext()->setContextProperty("liveData", pod->getLiveData());
+}
+
+void GuiController::loadCommonNameSpace()
+{
+    qmlRegisterUncreatableMetaObject(
+        common::staticMetaObject,   // Meta Object Created by Q_NAMESPACE macro
+        "waterloop.common",         // import statement
+        1, 0,                       // major and minor version of import
+        "Common",                   // Name in QML
+        "Error: Common is registered as an uncreatable namespace" // Error if someone tries to create an object from the common namespace
+    );
 }

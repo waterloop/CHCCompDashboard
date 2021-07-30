@@ -1,4 +1,4 @@
-#include "inc/networkcontroller.h"
+#include "networkcontroller/networkcontroller.h"
 #include <QDebug>
 
 RelayTcpController::RelayTcpController(QObject* parent, struct RelayTcpControllerConfig config)

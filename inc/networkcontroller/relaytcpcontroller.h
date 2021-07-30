@@ -4,7 +4,9 @@
 #include <QTcpSocket>
 #include <QtConcurrent/QtConcurrent>
 #include <QString>
-#include "../common.h"
+#include "common.h"
+
+using common::port_t;
 
 struct RelayTcpControllerConfig {
     port_t port;

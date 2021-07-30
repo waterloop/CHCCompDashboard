@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
-import "./qml"
+import "."
+import waterloop.common 1.0
 
 Window {
     width: 1024
@@ -17,6 +18,19 @@ Window {
     property string blue3: "#556697"
     property real maxMinCurDisplayHeight: 96
     property real maxMinCurDisplayWidth: 170
+
+    function getUnitString(unit) {
+        switch(unit) {
+        case Common.VOLT:
+            return 'V'
+        case Common.AMP:
+            return 'A'
+        case Common.PERCENTAGE:
+            return '%'
+        case Common.CELCIUS:
+            return 'C'
+        }
+    }
 
     Controls{
         id: controls
@@ -46,7 +60,7 @@ Window {
 
 
         GridView {
-            model: MockData {}
+            model: liveData
 
             interactive: contentHeight > parent.height
 
@@ -55,12 +69,18 @@ Window {
             cellWidth: maxMinCurDisplayWidth + 10
             cellHeight: maxMinCurDisplayHeight + 10
 
+            Component.onCompleted: console.log(currentItem)
+
+            onCurrentItemChanged: console.log(currentItem)
+
             delegate: MaxMinCurrentDisplay {
-                max: maxValue
-                min: minValue
-                current: currentValue
+                max: max_value
+                min: min_value
+                current: reading
+                label: display
                 height: maxMinCurDisplayHeight
                 width: maxMinCurDisplayWidth
+                units: getUnitString(unit)
             }
         }
     }

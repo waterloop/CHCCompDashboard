@@ -11,7 +11,7 @@ Rectangle {
         }
     }
 
-    state: "running"
+    state: "stoped"
 
     states: [
         State {

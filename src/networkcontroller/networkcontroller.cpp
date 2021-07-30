@@ -1,4 +1,4 @@
-#include "inc/networkcontroller.h"
+#include "networkcontroller/networkcontroller.h"
 
 NetworkController::NetworkController(QObject *parent)
     : QObject(parent),

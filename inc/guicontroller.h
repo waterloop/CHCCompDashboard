@@ -19,6 +19,12 @@ public:
     // Using the Engine load all of the singleton controllers
     void loadBackendControllers();
 
+    // Uses the Engine to load all backend DataModels
+    void loadBackendModels();
+
+    // Loads the common namespace into QML engine
+    void loadCommonNameSpace();
+
 private:
     QQmlApplicationEngine *m_engine;
 };

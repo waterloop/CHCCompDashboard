@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "bmsmodel.h"
+#include "livedatamodel/livedatamodel.h"
 
 class PodController : public QObject
 {
@@ -10,10 +11,11 @@ class PodController : public QObject
 public:
     explicit PodController(QObject *parent = nullptr);
 
-private:
-    BmsModel m_bms;
-private:
+    LiveDataModel* getLiveData();
 
+private:
+    BmsModel m_bmsData;
+    LiveDataModel m_liveData;
 
 signals:
 

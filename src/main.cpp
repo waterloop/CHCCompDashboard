@@ -1,9 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "inc/guicontroller.h"
-#include "inc/podcontroller.h"
-#include "inc/common.h"
-#include "inc/networkcontroller.h"
+#include "guicontroller.h"
+#include "podcontroller.h"
+#include "common.h"
+#include "networkcontroller/networkcontroller.h"
 
 PodController *pod;
 NetworkController *network_controller;
@@ -37,7 +37,10 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+
     guiController.loadBackendControllers();
+    guiController.loadBackendModels();
+    guiController.loadCommonNameSpace();
     engine.load(url);
 
     return app.exec();

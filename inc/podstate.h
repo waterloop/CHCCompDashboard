@@ -3,8 +3,10 @@
 
 #include <QObject>
 #include <QTimer>
+#include "common.h"
 
-typedef int Millisecond;
+using common::Unit;
+using common::Millisecond;
 
 /*!
  * \brief The AbstractPodState class
@@ -49,7 +51,7 @@ public:
     explicit PodState(T initialValue, Millisecond stateHealthTimeout, QObject *parent = nullptr);
 
     void updateState(T newState);
-    T getState();
+    T getState() const;
     void slot_startStateHealthWatcher();
 
 private:
@@ -86,7 +88,7 @@ void PodState<T>::updateState(T newState)
 }
 
 template <typename T>
-T PodState<T>::getState()
+T PodState<T>::getState() const
 {
     return m_podState;
 }
