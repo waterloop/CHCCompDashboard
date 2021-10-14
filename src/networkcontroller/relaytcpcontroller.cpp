@@ -7,6 +7,8 @@ RelayTcpController::RelayTcpController(QObject* parent, struct RelayTcpControlle
       m_relayTcpSocket(this)
 
 {
+    /// Connect the relayTcpSocket signals to
+    /// their respective signal handlers
     connect(&m_relayTcpSocket, &QAbstractSocket::errorOccurred,
             this, &RelayTcpController::slot_handleRelayTcpSocketErrorOccured);
 
@@ -15,6 +17,7 @@ RelayTcpController::RelayTcpController(QObject* parent, struct RelayTcpControlle
 
     connect(&m_relayTcpSocket, &QAbstractSocket::readyRead,
             this, &RelayTcpController::slot_handleRelayTcpSocketReadyRead);
+    /// END
 }
 
 RelayTcpController::~RelayTcpController()
@@ -29,9 +32,15 @@ RelayTcpController::~RelayTcpController()
 
 void RelayTcpController::slot_sendHandshake()
 {
+    /**
+      * TODO: setup some type of mutual exclusion on the
+      * m_message variable so that it cannot be changed
+      * before it is sent
+      */
     m_message = RELAY_BOARD_HANDSHAKE_REQUEST;
     connectToBoard();
 }
+
 
 void RelayTcpController::slot_sendMockCanRequest()
 {
@@ -63,6 +72,7 @@ void RelayTcpController::slot_handleRelayTcpSocketErrorOccured(
         /* Not really an Error, happens when ever the socket is closed by the
          other end */
         qDebug() << "Remote Host Closed Connection";
+        break;
     default:
         qDebug() << "Unknown Error Recieved from relayboardTcpSocket" << socketError;
         break;

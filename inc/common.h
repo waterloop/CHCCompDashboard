@@ -2,6 +2,7 @@
 #define COMMON_H
 #include <Qt>
 #include <QVariant>
+#include <QtQml>
 
 /**********************
  * Common Definitions *
@@ -10,7 +11,8 @@
 #define RELAY_BOARD_HANDSHAKE_REQUEST "HANDSHAKE\r\nDESKTOP\r\n"
 #define RELAY_BOARD_MOCK_CAN_REQUEST "SEND MOCK CAN\r\n"
 #define RELAY_BOARD_DEFAULT_TCP_PORT 8080
-#define DEV_HOST "127.0.0.1"
+//#define DEV_HOST "127.0.0.1"
+#define DEV_HOST "129.97.181.138"
 
 /*********************
  *   BMS CONSTANTS   *
@@ -91,6 +93,14 @@ Q_NAMESPACE
     };
      Q_ENUM_NS(Unit)
 
+    // Current Messsage that the pod is sending to the relay board.
+    // Using an enum for now. May need to upgrade in the future
+    enum Action {
+        GO,
+        STOP,
+    };
+    Q_ENUM_NS(Action)
+
     /**********************
      * Struct Definitions *
      **********************/
@@ -111,4 +121,14 @@ Q_NAMESPACE
         QVariant min;
     } OperationalEnvelope;
 }
+
+/*************************
+ * QML TYPE DECLARATIONS *
+ *************************/
+///
+/// QML Types must be declared at a global level so they are declared here
+/// rather then inside of the common namespace
+///
+QML_DECLARE_TYPE(common::Action)
+
 #endif

@@ -13,7 +13,7 @@ NetworkController *network_controller;
  * The most relavent section of this function is
  * the GUI controller, which is reponsible for patching
  * the backend controllers to the frontend so that signals
- * can be connected.
+ * and data models can be connected.
  */
 int main(int argc, char *argv[])
 {
@@ -26,21 +26,30 @@ int main(int argc, char *argv[])
     pod = new PodController();
     network_controller = new NetworkController();
 
+    /// Defining DEV_SANDBOX enables us to use a seperate qml file
+    /// as the base for the GUI. This way we can test individual components
+    /// seperatly before integrating them in the main GUI
 #ifndef DEV_SANDBOX
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
 #else
     const QUrl url(QStringLiteral("qrc:/qml/dev.qml"));
 #endif
 
+    // Boiler plate, you'll probably never need to touch this
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
+    /// Call guiController methods here
+    /// These methods are reponsible for
+    /// exposing different aspects of the backend
+    /// to qml files
     guiController.loadBackendControllers();
     guiController.loadBackendModels();
     guiController.loadCommonNameSpace();
+
     engine.load(url);
 
     return app.exec();

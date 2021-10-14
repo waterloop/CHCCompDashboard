@@ -27,6 +27,14 @@ public:
     virtual ~RelayTcpController();
 
 public slots:
+
+    /*!
+     * \brief RelayTcpController::slot_sendHandshake
+     *
+     * Queues the handshake request that will be sent when the
+     * desktop connects to the relay board and then
+     * triggers a connection to begin.
+     */
     void slot_sendHandshake();
     void slot_sendMockCanRequest();
 

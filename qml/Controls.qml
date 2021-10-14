@@ -1,13 +1,17 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.15
+import waterloop.common 1.0
+
 // Controls
 Rectangle {
 
     function handleGoControlClicked() {
         if (state == "running") {
             state = "stoped"
+            pod.currentAction = Common.STOP
         } else {
             state = "running"
+            pod.currentAction = Common.GO
         }
     }
 

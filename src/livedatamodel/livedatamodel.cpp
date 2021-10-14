@@ -75,6 +75,13 @@ QHash<int, QByteArray> LiveDataModel::roleNames() const
 ///      Public Api Methods
 ///
 ////////////////////////////////////////////////////
+
+/*!
+ * \brief LiveDataModel::insertData
+ * \param input
+ * Enumerates the fields of the modelinput and then adds them as
+ * rows to the end of the list of fields
+ */
 void LiveDataModel::insertData(LiveDataModelInput& input)
 {
     QList<QSharedPointer<LiveDataNode>> newData = input.enumerate();

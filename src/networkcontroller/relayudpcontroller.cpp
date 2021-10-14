@@ -29,8 +29,17 @@ void RelayUdpController::slot_connectToRelayBoard(port_t udp_port)
 {
     m_relayBoardUdpPort = udp_port;
     m_relayBoardUdpSocket.bind(QHostAddress::AnyIPv4,
-                          1337);
-    sendMessage(QByteArray("Message"));
+                          udp_port);
+
+#ifdef DEV_SANDBOX // Pingpong with the server
+    qDebug() << "Bound on port:" << udp_port;
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, [=]() {
+        qDebug() << "Sending Hello";
+        this->sendMessage(QByteArray("Hello"));
+    });
+    timer->start(500);
+#endif
 }
 
 
@@ -62,6 +71,7 @@ void RelayUdpController::slot_handleRelayUdpSocketReadyRead()
         QNetworkDatagram datagram = m_relayBoardUdpSocket.receiveDatagram();
         QByteArray data = datagram.data();
         // Do interesting stuff with data
+        qDebug() << "Received Data from RelayBoard UDP:" << data;
     }
 }
 

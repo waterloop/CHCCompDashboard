@@ -25,11 +25,22 @@ void GuiController::loadBackendControllers()
     m_engine->rootContext()->setContextProperty("network", network_controller);
 }
 
+/*!
+ * \brief GuiController::loadBackendModels
+ * Backend models are data interfaces which
+ * can be used to fill a QML View.
+ */
 void GuiController::loadBackendModels()
 {
     m_engine->rootContext()->setContextProperty("liveData", pod->getLiveData());
 }
 
+/*!
+ * \brief GuiController::loadCommonNameSpace
+ * Loading the common namespace into the qml
+ * space enables us to reference enums that are
+ * defined in the common namespace inside of QML.
+ */
 void GuiController::loadCommonNameSpace()
 {
     qmlRegisterUncreatableMetaObject(

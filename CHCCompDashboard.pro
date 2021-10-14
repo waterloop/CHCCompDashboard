@@ -12,6 +12,7 @@ SOURCES += \
     src/bmsmodel.cpp \
     src/guicontroller.cpp \
     src/main.cpp \
+    src/motorcontrolmodel.cpp \
     src/networkcontroller/relayudpcontroller.cpp \
     src/networkcontroller/networkcontroller.cpp \
     src/networkcontroller/relaytcpcontroller.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     inc/guicontroller.h \
     inc/livedatamodel/livedatamodelinput.h \
     inc/livedatamodel/livedatanode.h \
+    inc/motorcontrolmodel.h \
     inc/networkcontroller/networkcontroller.h \
     inc/networkcontroller/relaytcpcontroller.h \
     inc/networkcontroller/relayudpcontroller.h \
