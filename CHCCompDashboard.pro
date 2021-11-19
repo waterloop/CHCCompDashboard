@@ -18,7 +18,8 @@ SOURCES += \
     src/networkcontroller/relaytcpcontroller.cpp \
     src/podcontroller.cpp \
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    images.qrc
 
 INCLUDEPATH += inc/
 

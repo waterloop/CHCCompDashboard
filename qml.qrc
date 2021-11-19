@@ -10,5 +10,11 @@
         <file>qml/GradientBar.qml</file>
         <file>qml/GradientBarForm.ui.qml</file>
         <file>qml/main.qml</file>
+        <file>qml/PodDistanceTracker.qml</file>
+        <file>qml/PodDistanceTrackerForm.ui.qml</file>
+        <file>qml/PodStateViewer.qml</file>
+        <file>qml/PodStateViewerForm.ui.qml</file>
+        <file>qml/Speedometer.qml</file>
+        <file>qml/SpeedometerForm.ui.qml</file>
     </qresource>
 </RCC>

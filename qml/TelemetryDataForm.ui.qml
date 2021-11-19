@@ -9,7 +9,7 @@ Item {
     property string dataUnit: "VDC"
 
     property alias dataMax: gradient_bar.max
-    property alias dataMax: gradient_bar.min
+    property alias dataMin: gradient_bar.min
 
     Rectangle {
         id: rectangle
