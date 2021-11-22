@@ -26,6 +26,21 @@ Window {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         color: waterloo_dark
+
+        Text {
+            text: "Set Speed to 10"
+            color: "white"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.Center
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: pod.slot_handlePodMessage(
+            {
+              telemetry: { speed: 10 }
+            })
+        }
     }
 
     Rectangle {

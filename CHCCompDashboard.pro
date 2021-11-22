@@ -17,6 +17,7 @@ SOURCES += \
     src/networkcontroller/networkcontroller.cpp \
     src/networkcontroller/relaytcpcontroller.cpp \
     src/podcontroller.cpp \
+    src/torchicmodel.cpp
 
 RESOURCES += qml.qrc \
     images.qrc
@@ -47,5 +48,7 @@ HEADERS += \
     inc/networkcontroller/relayudpcontroller.h \
     inc/podcontroller.h \
     inc/podstate.h \
-    inc/livedatamodel/livedatamodel.h
+    inc/livedatamodel/livedatamodel.h \
+    inc/pressuresenssormodel.h \
+    inc/torchicmodel.h
 

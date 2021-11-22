@@ -81,6 +81,21 @@
 #define BATTERY_MAX_VOLTAGE 100 // TODO: CHANGE ME
 #define BATTERY_MIN_VOLTAGE 0   // TODO: CHANGE ME
 
+/*************************
+ *   Torchic CONSTANTS   *
+ *************************/
+#define INTITIAL_TORCHIC_TEMP 32.0f // celcius
+#define TORCHIC_TIMEOUT_MS (1000*7) // 7 seconds
+#define TORCHIC_MAX_TEMP 200        // celcius
+#define TORCHIC_MIN_TEMP 0          // celcius
+
+/*********************************
+ *   Pressure Sensor CONSTANTS   *
+ *********************************/
+#define INITIAL_PRESSURE_HIGH 100   // psi?
+#define INITIAL_PRESSURE_LOW 3      // psi?
+#define PRESURE_TIMEOUT_MS (1000*7) // seconds
+
 /******************************
  * Singletons for Controllers *
  ******************************/

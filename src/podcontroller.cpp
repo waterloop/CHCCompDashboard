@@ -4,6 +4,11 @@
 PodController::PodController(QObject *parent) : QObject(parent),
     m_bmsData(new BmsModel(this)),
     m_mcData(new MotorControlModel(this)),
+    m_torchic1(new TorchicModel(this)),
+    m_torchic2(new TorchicModel(this)),
+    m_pressureHigh(new PressureSensorModel(INITIAL_PRESSURE_HIGH, PRESURE_TIMEOUT_MS, this)),
+    m_pressureLow1(new PressureSensorModel(INITIAL_PRESSURE_LOW, PRESURE_TIMEOUT_MS, this)),
+    m_pressureLow2(new PressureSensorModel(INITIAL_PRESSURE_LOW, PRESURE_TIMEOUT_MS, this)),
     m_liveData(this),
     m_currentState(e_PodState::Resting),
     m_fieldHash()
@@ -26,6 +31,24 @@ PodController::PodController(QObject *parent) : QObject(parent),
     // Connections to m_mcData
     connect(this,       &PodController::sig_podSpeedAvailable,
             m_mcData, &MotorControlModel::slot_podSpeedReceived);
+
+    // Forward Updates from mcData to QML
+    connect(m_mcData, &MotorControlModel::sig_podSpeedUpdated,
+            this, &PodController::sig_mcDataChanged);
+    connect(m_mcData, &MotorControlModel::sig_bateryVoltageUpdated ,
+            this, &PodController::sig_mcDataChanged);
+    connect(m_mcData, &MotorControlModel::sig_batteryCurrentUpdated,
+            this, &PodController::sig_mcDataChanged);
+    connect(m_mcData, &MotorControlModel::sig_igbtTemperatureUpdated,
+            this, &PodController::sig_mcDataChanged);
+    connect(m_mcData, &MotorControlModel::sig_motorVoltageUpdated,
+            this, &PodController::sig_mcDataChanged);
+
+    // Forward Updates from torchics to QML
+    connect(m_torchic1, &TorchicModel::sig_temperatureUpdated,
+            this, &PodController::sig_torchic1Changed);
+    connect(m_torchic2, &TorchicModel::sig_temperatureUpdated,
+            this, &PodController::sig_torchic2Changed);
 }
 
 PodController::~PodController()
@@ -80,6 +103,7 @@ void PodController::setRequestedState(const common::e_PodState &requestedState)
  */
 void PodController::slot_handlePodMessage(QJsonObject podMessage)
 {
+    qDebug() << "Received Message" << podMessage;
     for (QString key : podMessage.keys())
     {
         if (!m_fieldHash.contains(key)) {

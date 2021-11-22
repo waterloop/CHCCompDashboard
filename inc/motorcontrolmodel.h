@@ -11,7 +11,7 @@ using common::OperationalEnvelope;
 /*!
  * \brief The MotorControlModel class
  * The Motor Control model class is responsible for storing Up To Date
- * information about the state of the BMS system.
+ * information about the state of the motor control system.
  * Health Check timeouts will be handled by this class and signals
  * will be sent from this class if Motor Control health checks miss their allotted checkins
  */
@@ -66,7 +66,7 @@ signals:
     // Signals for when the data is updated
     void sig_igbtTemperatureUpdated(float newIgbtTemperature);
     void sig_podSpeedUpdated(float newPodSpeed);
-    void sig_batteryCurerntUpdated(float newBatteryCurrent);
+    void sig_batteryCurrentUpdated(float newBatteryCurrent);
     void sig_motorVoltageUpdated(float newMotorVoltage);
     void sig_bateryVoltageUpdated(float newBatteryVoltage);
     void sig_motorcontrolHealthCheckFailure();
