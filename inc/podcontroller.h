@@ -65,7 +65,12 @@ private:
         TELEMETRY,
         TELEMETRY_TIMESTAMP,
         // TELEMETRY FIELDS
-        SPEED
+        SPEED,
+        TORCHIC_1,
+        TORCHIC_2,
+        PRESSURE_HIGH,
+        PRESSURE_LOW_1,
+        PRESSURE_LOW_2
     };
 
     QHash<QString, FieldName> m_fieldHash;
