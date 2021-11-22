@@ -18,6 +18,7 @@ using common::OperationalEnvelope;
 class BmsModel : public QObject, public LiveDataModelInput
 {
     Q_OBJECT
+    Q_PROPERTY(float batteryPackVoltage READ getBatteryPackVoltage NOTIFY sig_batteryPackVoltageUpdated)
 
 public:
     explicit BmsModel(QObject* parent=nullptr);

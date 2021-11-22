@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GuiController guiController(&engine);
     pod = new PodController();
-    network_controller = new NetworkController();
+    network_controller = new NetworkController(pod);
 
     /// Defining DEV_SANDBOX enables us to use a seperate qml file
     /// as the base for the GUI. This way we can test individual components
@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
     guiController.loadBackendControllers();
     guiController.loadBackendModels();
     guiController.loadCommonNameSpace();
+    guiController.registerCustomMetaTypes();
 
     engine.load(url);
 

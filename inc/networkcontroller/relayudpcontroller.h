@@ -27,7 +27,7 @@ public slots:
     void slot_connectToRelayBoard(port_t udp_port);
 
 signals:
-    void sig_dataReceived(QByteArray data);
+    void sig_dataReceived(QJsonObject podData);
 
 private:
     QUdpSocket m_relayBoardUdpSocket;

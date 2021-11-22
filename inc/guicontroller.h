@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 
-
 /*
  * class GuiController
  * The Gui Controller is responsible for connecting backend C++ code with
@@ -25,6 +24,8 @@ public:
     // Loads the common namespace into QML engine
     void loadCommonNameSpace();
 
+    // register custom classes as datatypes in the meta system
+    void registerCustomMetaTypes();
 private:
     QQmlApplicationEngine *m_engine;
 };

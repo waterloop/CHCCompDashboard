@@ -1,5 +1,6 @@
 #include "guicontroller.h"
 #include "podcontroller.h"
+#include "motorcontrolmodel.h"
 #include "networkcontroller/networkcontroller.h"
 #include <QQmlContext>
 #include "common.h"
@@ -49,5 +50,15 @@ void GuiController::loadCommonNameSpace()
         1, 0,                       // major and minor version of import
         "Common",                   // Name in QML
         "Error: Common is registered as an uncreatable namespace" // Error if someone tries to create an object from the common namespace
+    );
+}
+
+void GuiController::registerCustomMetaTypes()
+{
+    qmlRegisterUncreatableType<MotorControlModel>(
+        "waterloop.common",         // uri / import statement
+        1,0,                        // major, minor verion of import
+        "MotorControlModel",        // Name in QML
+        "Error: MotorControlModel is registered as an uncreatable type"
     );
 }

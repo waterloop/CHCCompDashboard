@@ -18,15 +18,30 @@ using common::OperationalEnvelope;
 class MotorControlModel : public QObject, public LiveDataModelInput
 {
     Q_OBJECT
+    Q_PROPERTY(int podSpeed READ getPodSpeed NOTIFY sig_podSpeedUpdated)
 
 public:
     explicit MotorControlModel(QObject* parent=nullptr);
 
-    // getters
+    /// GETTERS
 //    float getBatteryPackCurrent() const;
+    float getPodSpeed() const;
+    float getBatteryCurrent() const;
+    float getIgbtTemperature() const;
+    float getMotorVoltage() const;
+    float getBatteryVoltage() const;
+
+    /// SETTERS
+    void setPodSpeed(const float &podSpeed);
+
 
     /// LiveDataModelInput Implimentations
     QList<QSharedPointer<LiveDataNode>> enumerate() const override;
+
+    /// Operator Implementations
+    MotorControlModel& operator=(const MotorControlModel& other); // Copy Assignment
+    bool operator==(const MotorControlModel& other) const;
+    bool operator!=(const MotorControlModel& other) const;
 
 
 private:
@@ -34,7 +49,7 @@ private:
     PodState<QVariant> m_igbtTemperature;
     PodState<QVariant> m_podSpeed;
     PodState<QVariant> m_batteryCurrent;
-    PodState<QVariant> m_motorVolage;
+    PodState<QVariant> m_motorVoltage;
     PodState<QVariant> m_batteryVoltage;
 
     /**
@@ -58,6 +73,8 @@ signals:
 
 public slots:
     // Slots for when data is received
+    void slot_podSpeedReceived(float newPodSpeed);
 };
+
 
 #endif // MOTORCONTROLMODEL_H

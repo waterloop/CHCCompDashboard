@@ -4,6 +4,7 @@
 #include "common.h"
 #include "networkcontroller/relaytcpcontroller.h"
 #include "networkcontroller/relayudpcontroller.h"
+#include "podcontroller.h"
 
 
 /*!
@@ -15,7 +16,7 @@ class NetworkController : public QObject
 {
     Q_OBJECT
 public:
-    explicit NetworkController(QObject* parent = nullptr);
+    explicit NetworkController(PodController* podController, QObject* parent = nullptr);
     ~NetworkController();
 
     /**

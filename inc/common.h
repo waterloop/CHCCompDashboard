@@ -11,8 +11,8 @@
 #define RELAY_BOARD_HANDSHAKE_REQUEST "HANDSHAKE\r\nDESKTOP\r\n"
 #define RELAY_BOARD_MOCK_CAN_REQUEST "SEND MOCK CAN\r\n"
 #define RELAY_BOARD_DEFAULT_TCP_PORT 8080
-//#define DEV_HOST "127.0.0.1"
-#define DEV_HOST "129.97.181.138"
+//#define DEV_HOST "127.0.0.1" // loopback
+#define DEV_HOST "129.97.181.138" // was the pi at one point
 
 /*********************
  *   BMS CONSTANTS   *
@@ -53,6 +53,33 @@
 #define DC_LINK_CAP_MAX_VOLTAGE 100 // TODO: CHANGE ME
 #define DC_LINK_CAP_MIN_VOLTAGE 0   // TODO: CHANGE ME
 
+/**********************************
+ *   Motor Controller CONSTANTS   *
+ **********************************/
+#define INITIAL_POD_SPEED 0.0f
+#define POD_SPEED_TIMEOUT_MS (1000*7) // 7 seconds
+#define POD_SPEED_MAX 1000000 // TODO: CHANGE ME
+#define POD_SPEED_MIN 0       // TODO: CHANGE ME
+
+#define INITIAL_IGBT_TEMP 0.0f
+#define IGBT_TEMP_TIMEOUT_MS (1000*7) // 7 seconds
+#define IGBT_MAX_TEMP 200
+#define IGBT_MIN_TEMP 0
+
+#define INITIAL_BATTERY_CURRRENT 0.0f
+#define BATTERY_CURRENT_TIMEOUT_MS (1000*7) // 7 seconds
+#define BATTERY_MAX_CURRENT 100 // TODO: CHANGE ME
+#define BATTERY_MIN_CURRENT 0   // TODO: CHANGE ME
+
+#define INITIAL_MOTOR_VOLTAGE 0.0f
+#define MOTOR_VOLTAGE_TIMEOUT_MS (1000*7) // 7 seconds
+#define MOTOR_MAX_VOLTAGE 100 // TODO: CHANGE ME
+#define MOTOR_MIN_VOLTAGE 0   // TODO: CHANGE ME
+
+#define INITIAL_BATTERY_VOLTAGE 0.0f
+#define BATTERY_VOLTAGE_TIMEOUT_MS (1000*7) // 7 seconds
+#define BATTERY_MAX_VOLTAGE 100 // TODO: CHANGE ME
+#define BATTERY_MIN_VOLTAGE 0   // TODO: CHANGE ME
 
 /******************************
  * Singletons for Controllers *
@@ -64,8 +91,7 @@
 class PodController;
 extern PodController *pod;
 
-/*
- * Singlton Network Interface Controller
+/* Singlton Network Interface Controller
  * Handles all external communication
  */
 class NetworkController;
@@ -93,13 +119,30 @@ Q_NAMESPACE
     };
      Q_ENUM_NS(Unit)
 
-    // Current Messsage that the pod is sending to the relay board.
-    // Using an enum for now. May need to upgrade in the future
-    enum Action {
-        GO,
-        STOP,
+    /**
+     * @brief The e_PodState enum
+     * Enumerated Versions of our Pod's states.
+     * We needed to overload the name because we use
+     * PodState to define a Class that handles Telemetry.
+     * Might Refactor that later to call it PodData instead,
+     * but until then we'll stick with this.
+     */
+    enum e_PodState {
+        Resting                 = 0,
+        LowVolatage             = 1,
+        Armed                   = 2,
+        AutoPilot               = 3,
+        Braking                 = 4,
+        EmergencyBrake          = 5,
+        SystemFailure           = 6,
+        ManualOperationWaiting  = 7,
+        Accellerating           = 8,
+        AtSpeed                 = 9,
+        Decelerating            = 10,
+        Invalid                 = 11,
     };
-    Q_ENUM_NS(Action)
+    Q_ENUM_NS(e_PodState)
+
 
     /**********************
      * Struct Definitions *
@@ -120,6 +163,11 @@ Q_NAMESPACE
         QVariant max;
         QVariant min;
     } OperationalEnvelope;
+
+    /*************************
+     * Function declarations *
+     *************************/
+    e_PodState from_int(int value);
 }
 
 /*************************
@@ -129,6 +177,6 @@ Q_NAMESPACE
 /// QML Types must be declared at a global level so they are declared here
 /// rather then inside of the common namespace
 ///
-QML_DECLARE_TYPE(common::Action)
+QML_DECLARE_TYPE(common::e_PodState)
 
 #endif

@@ -54,6 +54,12 @@ public:
     T getState() const;
     void slot_startStateHealthWatcher();
 
+    /// Copy Assignment
+    /// Allows Data to be updated added without changing the
+    /// timeout
+    PodState<T>& operator=(const PodState<T> & copy);
+    PodState<T>& operator=(const T & newData);
+
 private:
     /* timeout which restarts each time data is recieved */
     QTimer m_stateHealthWatcher;
@@ -78,6 +84,20 @@ template <typename T>
 void PodState<T>::slot_startStateHealthWatcher()
 {
     m_stateHealthWatcher.start();
+}
+
+template<typename T>
+PodState<T> &PodState<T>::operator=(const PodState<T> &copy)
+{
+    this->m_podState = copy.getState();
+    return *this;
+}
+
+template<typename T>
+PodState<T> &PodState<T>::operator=(const T &newData)
+{
+    this->m_podState = newData;
+    return *this;
 }
 
 template <typename T>

@@ -48,15 +48,6 @@ Window {
         }
     }
 
-//    Rectangle {
-//        id: footer
-//        height: 80
-//        anchors.left: parent.left
-//        anchors.right: parent.right
-//        anchors.bottom: parent.bottom
-//        color: waterloo_dark
-//    }
-
     Rectangle {
         id: display_container
         anchors {
@@ -66,7 +57,6 @@ Window {
             bottom: parent.bottom
             topMargin: 225
             bottomMargin: 80
-//            leftMargin: 32
             rightMargin: 80
         }
         color: waterloo_light
@@ -86,6 +76,7 @@ Window {
         Speedometer {
             id: speedometer
             width: 80
+            speed: pod.motorController.podSpeed
             anchors {
                 right: data_grid.right
                 bottom: pod_state_viewer.bottom

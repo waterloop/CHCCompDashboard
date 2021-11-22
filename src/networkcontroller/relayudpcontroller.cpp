@@ -70,8 +70,15 @@ void RelayUdpController::slot_handleRelayUdpSocketReadyRead()
     {
         QNetworkDatagram datagram = m_relayBoardUdpSocket.receiveDatagram();
         QByteArray data = datagram.data();
-        // Do interesting stuff with data
         qDebug() << "Received Data from RelayBoard UDP:" << data;
+        QJsonParseError error;
+        QJsonDocument jsonData = QJsonDocument::fromJson(data, &error);
+        if (jsonData.isObject()) {
+            sig_dataReceived(jsonData.object());
+        } else {
+            qDebug() << "Error: Data received was not a Object. Error:" << error.errorString();
+        }
+        // Do interesting stuff with data
     }
 }
 
