@@ -8,11 +8,13 @@
  * Common Definitions *
  **********************/
 
-#define RELAY_BOARD_HANDSHAKE_REQUEST "HANDSHAKE\r\nDESKTOP\r\n"
+#define RELAY_BOARD_HANDSHAKE_REQUEST "CONNECT\r\n"
+#define RELAY_BOARD_DISCONNECT "DISCONNECT\r\n"
 #define RELAY_BOARD_MOCK_CAN_REQUEST "SEND MOCK CAN\r\n"
-#define RELAY_BOARD_DEFAULT_TCP_PORT 8080
-//#define DEV_HOST "127.0.0.1" // loopback
-#define DEV_HOST "129.97.181.138" // was the pi at one point
+#define RELAY_BOARD_DEFAULT_PORT 8080
+#define DEV_HOST "127.0.0.1" // loopback
+//#define DEV_HOST "129.97.181.138" // was the pi at one point
+//#define DEV_HOST "raspberrypi.local"
 
 /*********************
  *   BMS CONSTANTS   *
@@ -134,30 +136,6 @@ Q_NAMESPACE
     };
      Q_ENUM_NS(Unit)
 
-    /**
-     * @brief The e_PodState enum
-     * Enumerated Versions of our Pod's states.
-     * We needed to overload the name because we use
-     * PodState to define a Class that handles Telemetry.
-     * Might Refactor that later to call it PodData instead,
-     * but until then we'll stick with this.
-     */
-    enum e_PodState {
-        Resting                 = 0,
-        LowVolatage             = 1,
-        Armed                   = 2,
-        AutoPilot               = 3,
-        Braking                 = 4,
-        EmergencyBrake          = 5,
-        SystemFailure           = 6,
-        ManualOperationWaiting  = 7,
-        Accellerating           = 8,
-        AtSpeed                 = 9,
-        Decelerating            = 10,
-        Invalid                 = 11,
-    };
-    Q_ENUM_NS(e_PodState)
-
 
     /**********************
      * Struct Definitions *
@@ -182,7 +160,7 @@ Q_NAMESPACE
     /*************************
      * Function declarations *
      *************************/
-    e_PodState from_int(int value);
+//    e_PodState from_int(int value);
 }
 
 /*************************
@@ -192,6 +170,67 @@ Q_NAMESPACE
 /// QML Types must be declared at a global level so they are declared here
 /// rather then inside of the common namespace
 ///
-QML_DECLARE_TYPE(common::e_PodState)
+//QML_DECLARE_TYPE(common::e_PodState)
+
+class PodStates : public QObject {
+    Q_OBJECT
+public:
+    /**
+     * @brief The e_PodState enum
+     * Enumerated Versions of our Pod's states.
+     * We needed to overload the name because we use
+     * PodState to define a Class that handles Telemetry.
+     * Might Refactor that later to call it PodData instead,
+     * but until then we'll stick with this.
+     */
+    enum e_PodState {
+        Resting                 = 0,
+        LowVoltage             = 1,
+        Armed                   = 2,
+        AutoPilot               = 3,
+        Braking                 = 4,
+        EmergencyBrake          = 5,
+        SystemFailure           = 6,
+        ManualOperationWaiting  = 7,
+        Accellerating           = 8,
+        AtSpeed                 = 9,
+        Decelerating            = 10,
+        Invalid                 = 11,
+    };
+    Q_ENUM(e_PodState)
+
+    inline static PodStates::e_PodState from_int(int val);
+};
+
+inline PodStates::e_PodState PodStates::from_int(int val)
+{
+    switch (val) {
+    case 0:
+        return e_PodState::Resting;
+    case 1:
+        return e_PodState::LowVoltage;
+    case 2:
+        return e_PodState::Armed;
+    case 3:
+        return e_PodState::AutoPilot;
+    case 4:
+        return e_PodState::Braking;
+    case 5:
+        return e_PodState::EmergencyBrake;
+    case 6:
+        return e_PodState::SystemFailure;
+    case 7:
+        return e_PodState::ManualOperationWaiting;
+    case 8:
+        return e_PodState::Accellerating;
+    case 9:
+        return e_PodState::AtSpeed;
+    case 10:
+        return e_PodState::Decelerating;
+    default:
+        return e_PodState::Invalid;
+    }
+}
+
 
 #endif

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/pod.svg</file>
+        <file>assets/checkmark.svg</file>
     </qresource>
 </RCC>

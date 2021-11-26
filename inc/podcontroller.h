@@ -9,13 +9,11 @@
 #include "common.h"
 #include "pressuresenssormodel.h"
 
-using common::e_PodState;
-
 class PodController : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(e_PodState currentState READ getCurrentState NOTIFY sig_currentStateChanged)
-    Q_PROPERTY(e_PodState requestedState READ getRequestedState WRITE setRequestedState NOTIFY sig_requestedStateChanged)
+    Q_PROPERTY(PodStates::e_PodState currentState READ getCurrentState NOTIFY sig_currentStateChanged)
+    Q_PROPERTY(PodStates::e_PodState requestedState READ getRequestedState WRITE setRequestedState NOTIFY sig_requestedStateChanged)
     Q_PROPERTY(bool transistioning READ isTransitioning NOTIFY sig_transitioningChanged)
     Q_PROPERTY(MotorControlModel* motorController MEMBER m_mcData NOTIFY sig_mcDataChanged)
     Q_PROPERTY(TorchicModel* torchic1 MEMBER m_torchic1 NOTIFY sig_torchic1Changed)
@@ -30,11 +28,11 @@ public:
     bool isTransitioning() const;
     bool setTransitioning(bool newState);
 
-    e_PodState getCurrentState() const;
-    e_PodState getRequestedState() const;
+    PodStates::e_PodState getCurrentState() const;
+    PodStates::e_PodState getRequestedState() const;
 
-    void setCurrentState(const e_PodState &currentState);
-    void setRequestedState(const e_PodState &requestedState);
+    void setCurrentState(const PodStates::e_PodState &currentState);
+    void setRequestedState(const PodStates::e_PodState &requestedState);
 public slots:
     void slot_handlePodMessage(QJsonObject podMessage); // Connects to the UDP Conntroller
 
@@ -49,8 +47,8 @@ private:
 
     LiveDataModel m_liveData;   // QML friendly model which provides a list of up to date information from various pod systems
 
-    e_PodState m_currentState;
-    e_PodState m_requestedState;
+    PodStates::e_PodState m_currentState;
+    PodStates::e_PodState m_requestedState;
 
     /**
      * @brief The FieldName enum
@@ -75,8 +73,8 @@ private:
 
     QHash<QString, FieldName> m_fieldHash;
 signals:
-    void sig_currentStateChanged(const e_PodState &currentState);
-    void sig_requestedStateChanged(const e_PodState &requestedState);
+    void sig_currentStateChanged(const PodStates::e_PodState &currentState);
+    void sig_requestedStateChanged(const PodStates::e_PodState &requestedState);
     void sig_transitioningChanged();
     void sig_mcDataChanged();
     void sig_torchic1Changed();

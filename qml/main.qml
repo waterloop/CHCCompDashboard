@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import "."
@@ -19,27 +19,52 @@ Window {
         anchors.fill: parent
     }
 
-    Rectangle {
-        id: side_bar
-        width: 300
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        color: waterloo_dark
+//    Rectangle {
+//        id: side_bar
+//        width: 300
+//        anchors.left: parent.left
+//        anchors.top: parent.top
+//        anchors.bottom: parent.bottom
+//        color: waterloo_dark
 
-        Text {
-            text: "Set Speed to 10"
-            color: "white"
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.Center
+//        Text {
+//            text: "Connect"
+//            color: "white"
+//            horizontalAlignment: Text.AlignHCenter
+//            verticalAlignment: Text.Center
+//        }
+
+//        MouseArea {
+//            anchors.fill: parent
+//            onClicked: network.connectToRelayBoard()
+//        }
+//    }
+    SideBar {
+        id: side_bar
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: parent.bottom
         }
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: pod.slot_handlePodMessage(
-            {
-              telemetry: { speed: 10 }
-            })
+        connect_button_text: {
+            if (network.relayBoardConnected) {
+                "Disconnect"
+            } else {
+                "Connect"
+            }
+        }
+
+        onConnectionButtonPressed: {
+            if (network.relayBoardConnected) {
+                network.disconnectFromRelayBoard()
+            } else {
+                network.connectToRelayBoard()
+            }
+        }
+
+        onEditDashboardPressed: {
+            console.log("trying to edit dashboard")
         }
     }
 
@@ -84,8 +109,43 @@ Window {
                 left: data_grid.left
                 right: speedometer.left
             }
-            state: "RestingState"
-            onStateSelected: pod_state_viewer.state = newState
+
+            state: {
+                if (!network.relayBoardConnected) return "";
+                switch (pod.currentState) {
+                case PodStates.LowVoltage:
+                    return "LvReadyState"
+                case PodStates.Armed:
+                    return "HvReadyState"
+                case PodStates.AutoPilot:
+                    return "AutopilotState"
+                case PodStates.Braking:
+                    return "BrakingState"
+                case PodStates.Resting:
+                default:
+                    return "RestingState"
+                }
+            }
+            onStateSelected: {
+                if (!network.relayBoardConnected) return; // Don't try to change states if the relay board isn't connected
+                switch (newState) {
+                case "LvReadyState":
+                    pod.requestedState = PodStates.LowVoltage
+                    break
+                case "HvReadyState":
+                    pod.requestedState = PodStates.Armed
+                    break
+                case "AutopilotState":
+                    pod.requestedState = PodStates.Autopilot
+                    break;
+                case "BrakingState":
+                    pod.requestedState = PodStates.Braking
+                    break;
+                case "RestingState":
+                default:
+                    console.log("State: ", newState, "Not implimented")
+                }
+            }
         }
 
         Speedometer {

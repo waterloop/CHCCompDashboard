@@ -20,7 +20,7 @@ public:
     explicit RelayTcpController(
                 QObject* parent=nullptr,
                 struct RelayTcpControllerConfig config={
-                    RELAY_BOARD_DEFAULT_TCP_PORT,
+                    RELAY_BOARD_DEFAULT_PORT,
                     QString(DEV_HOST)
                 }
             );
@@ -37,6 +37,7 @@ public slots:
      */
     void slot_sendHandshake();
     void slot_sendMockCanRequest();
+    void slot_sendDisconnect();
 
 signals:
     /**
@@ -53,6 +54,7 @@ signals:
      */
     void sig_relayBoardDisconnected();
 
+    void sig_disconnectMessageSuccess();
 
 private:
     struct RelayTcpControllerConfig m_config;

@@ -18,6 +18,11 @@ float TorchicModel::getTemperature1() const
     return m_temperature1.getState();
 }
 
+float TorchicModel::getTemperature2() const
+{
+    return m_temperature2.getState();
+}
+
 void TorchicModel::slot_temperaturesAvailable(float temp1, float temp2)
 {
     bool state_changed = temp1 != m_temperature1.getState() || temp2 != m_temperature2.getState();

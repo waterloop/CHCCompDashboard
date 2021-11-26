@@ -51,6 +51,11 @@ void GuiController::loadCommonNameSpace()
         "Common",                   // Name in QML
         "Error: Common is registered as an uncreatable namespace" // Error if someone tries to create an object from the common namespace
     );
+    qmlRegisterUncreatableType<PodStates>(
+                "waterloop.common",
+                1,0,
+                "PodStates",
+                "Cannot Create Podstates in QML");
 }
 
 void GuiController::registerCustomMetaTypes()

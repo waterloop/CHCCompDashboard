@@ -1,5 +1,9 @@
 #include "networkcontroller/networkcontroller.h"
 #include <QDebug>
+#include <QRegularExpression>
+
+QRegularExpression okMessage("^OK ");
+QRegularExpression disconnectedMessage("^DISCONNECTED");
 
 RelayTcpController::RelayTcpController(QObject* parent, struct RelayTcpControllerConfig config)
     : QObject(parent),
@@ -48,6 +52,12 @@ void RelayTcpController::slot_sendMockCanRequest()
     connectToBoard();
 }
 
+void RelayTcpController::slot_sendDisconnect()
+{
+    m_message = RELAY_BOARD_DISCONNECT;
+    connectToBoard();
+}
+
 void RelayTcpController::connectToBoard()
 {
 #ifdef DEV_SANDBOX
@@ -89,6 +99,16 @@ void RelayTcpController::slot_handleRelayTcpSocketConnected()
 void RelayTcpController::slot_handleRelayTcpSocketReadyRead()
 {
     QByteArray response = m_relayTcpSocket.readAll();
-    qDebug() << "Response Received" << response;
-    emit sig_relayBoardConnected(response.toUShort());
+//    qDebug() << "Response Received" << response;
+    QRegularExpressionMatch okMatch = okMessage.match(response);
+    /// Full Message Will be of the Form "OK [0-9][0-9][0-9][0-9] | ERROR [a-zA-Z \.]* | DISCONNECTED"
+    if (okMatch.hasMatch()) {
+        response.remove(0, okMatch.capturedLength());
+        emit sig_relayBoardConnected(response.toUShort());
+    } else {
+        QRegularExpressionMatch disconnectedMatch = disconnectedMessage.match(response);
+        if (disconnectedMatch.hasMatch()) {
+            emit sig_disconnectMessageSuccess();
+        }
+    }
 }

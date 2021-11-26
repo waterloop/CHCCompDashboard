@@ -16,5 +16,9 @@
         <file>qml/PodStateViewerForm.ui.qml</file>
         <file>qml/Speedometer.qml</file>
         <file>qml/SpeedometerForm.ui.qml</file>
+        <file>qml/SideBar.qml</file>
+        <file>qml/SideBarForm.ui.qml</file>
+        <file>qml/EditDashboardDialog.qml</file>
+        <file>qml/EditDashboardDialogForm.ui.qml</file>
     </qresource>
 </RCC>

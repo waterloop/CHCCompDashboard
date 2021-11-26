@@ -10,7 +10,7 @@ PodController::PodController(QObject *parent) : QObject(parent),
     m_pressureLow1(new PressureSensorModel(INITIAL_PRESSURE_LOW, PRESURE_TIMEOUT_MS, this)),
     m_pressureLow2(new PressureSensorModel(INITIAL_PRESSURE_LOW, PRESURE_TIMEOUT_MS, this)),
     m_liveData(this),
-    m_currentState(e_PodState::Resting),
+    m_currentState(PodStates::e_PodState::Resting),
     m_fieldHash()
 {
     m_fieldHash.insert(QString("current_state"), FieldName::CURRENT_STATE);
@@ -28,7 +28,7 @@ PodController::PodController(QObject *parent) : QObject(parent),
     connect(this, &PodController::sig_requestedStateChanged,
             this, &PodController::sig_transitioningChanged);
 
-    // Connections to m_mcData
+    // Pass data to m_mcData
     connect(this,       &PodController::sig_podSpeedAvailable,
             m_mcData, &MotorControlModel::slot_podSpeedReceived);
 
@@ -43,6 +43,12 @@ PodController::PodController(QObject *parent) : QObject(parent),
             this, &PodController::sig_mcDataChanged);
     connect(m_mcData, &MotorControlModel::sig_motorVoltageUpdated,
             this, &PodController::sig_mcDataChanged);
+
+    // Pass Data to torchics
+    connect(this, &PodController::sig_torchic1DataAvailable,
+            m_torchic1, &TorchicModel::slot_temperaturesAvailable);
+    connect(this, &PodController::sig_torchic2DataAvailable,
+            m_torchic2, &TorchicModel::slot_temperaturesAvailable);
 
     // Forward Updates from torchics to QML
     connect(m_torchic1, &TorchicModel::sig_temperatureUpdated,
@@ -67,28 +73,29 @@ bool PodController::isTransitioning() const
     return m_currentState == m_requestedState;
 }
 
-e_PodState PodController::getCurrentState() const
+PodStates::e_PodState PodController::getCurrentState() const
 {
     return m_currentState;
 }
 
-common::e_PodState PodController::getRequestedState() const
+PodStates::e_PodState PodController::getRequestedState() const
 {
     return m_requestedState;
 }
 
-void PodController::setCurrentState(const e_PodState &currentState)
+void PodController::setCurrentState(const PodStates::e_PodState &currentState)
 {
-    qDebug() << "Setting Current State to " << currentState;
     if (m_currentState != currentState) {
+        qDebug() << "Setting Current State to " << currentState;
         m_currentState = currentState;
         emit sig_currentStateChanged(currentState);
     }
 }
 
-void PodController::setRequestedState(const common::e_PodState &requestedState)
+void PodController::setRequestedState(const PodStates::e_PodState &requestedState)
 {
     if (m_requestedState != requestedState) {
+        qDebug() << "Setting RequestedState" << requestedState;
         m_requestedState = requestedState;
         emit sig_requestedStateChanged(requestedState);
     }
@@ -103,7 +110,7 @@ void PodController::setRequestedState(const common::e_PodState &requestedState)
  */
 void PodController::slot_handlePodMessage(QJsonObject podMessage)
 {
-    qDebug() << "Received Message" << podMessage;
+//    qDebug() << "Received Message" << podMessage;
     for (QString key : podMessage.keys())
     {
         if (!m_fieldHash.contains(key)) {
@@ -114,23 +121,23 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
         case CURRENT_STATE: {
             QJsonValue value = podMessage.value(key);
             if (value.isDouble()) {
-                int default_value{static_cast<int>(e_PodState::Invalid)};
-                setCurrentState(common::from_int(value.toInt(default_value)));
+                int default_value{static_cast<int>(PodStates::e_PodState::Invalid)};
+                setCurrentState(PodStates::from_int(value.toInt(default_value)));
             } else {
-                setCurrentState(e_PodState::Invalid);
+                setCurrentState(PodStates::e_PodState::Invalid);
             }
         }break;
         case ERRNO: {
             // TODO: Impliment
-            qDebug() << "Errno Value in Pod Message: " << podMessage.value(key);
+//            qDebug() << "Errno Value in Pod Message: " << podMessage.value(key);
         }break;
         case PENDING_NEXT_STATE: {
             QJsonValue value = podMessage.value(key);
             if (value.isDouble()) {
-                int default_value{static_cast<int>(e_PodState::Invalid)};
-                setRequestedState(common::from_int(value.toInt(default_value)));
+                int default_value{static_cast<int>(PodStates::e_PodState::Invalid)};
+                setRequestedState(PodStates::from_int(value.toInt(default_value)));
             } else {
-                setRequestedState(e_PodState::Invalid);
+                setRequestedState(PodStates::e_PodState::Invalid);
             }
         }break;
         case RECOVERING: {
@@ -165,35 +172,5 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
         default:
             qDebug() << "ERROR: Found a key that was not expected at the top level of the hierarchy.\nKey Found: " << key;
         }
-    }
-}
-
-e_PodState common::from_int(int val)
-{
-    switch (val) {
-    case 0:
-        return e_PodState::Resting;
-    case 1:
-        return e_PodState::LowVolatage;
-    case 2:
-        return e_PodState::Armed;
-    case 3:
-        return e_PodState::AutoPilot;
-    case 4:
-        return e_PodState::Braking;
-    case 5:
-        return e_PodState::EmergencyBrake;
-    case 6:
-        return e_PodState::SystemFailure;
-    case 7:
-        return e_PodState::ManualOperationWaiting;
-    case 8:
-        return e_PodState::Accellerating;
-    case 9:
-        return e_PodState::AtSpeed;
-    case 10:
-        return e_PodState::Decelerating;
-    default:
-        return e_PodState::Invalid;
     }
 }
