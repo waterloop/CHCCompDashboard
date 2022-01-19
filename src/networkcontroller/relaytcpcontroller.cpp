@@ -4,6 +4,7 @@
 
 QRegularExpression okMessage("^OK ");
 QRegularExpression disconnectedMessage("^DISCONNECTED");
+QRegularExpression errorMessage("^ERROR ");
 
 RelayTcpController::RelayTcpController(QObject* parent, struct RelayTcpControllerConfig config)
     : QObject(parent),
@@ -109,6 +110,12 @@ void RelayTcpController::slot_handleRelayTcpSocketReadyRead()
         QRegularExpressionMatch disconnectedMatch = disconnectedMessage.match(response);
         if (disconnectedMatch.hasMatch()) {
             emit sig_disconnectMessageSuccess();
+        }
+
+        QRegularExpressionMatch errorMatch = errorMessage.match(response);
+        if (errorMatch.hasMatch()) {
+            QString errorMessage = QString(response).remove("ERROR ");
+            emit sig_relayBoardConnectionError(errorMessage);
         }
     }
 }

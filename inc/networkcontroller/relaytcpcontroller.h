@@ -56,6 +56,13 @@ signals:
 
     void sig_disconnectMessageSuccess();
 
+    /**
+     * @brief sig_relayBoardConnectionError
+     * Emitted when the network controller has an error
+     * when connecting to the relay board
+     */
+    void sig_relayBoardConnectionError(QString error_message);
+
 private:
     struct RelayTcpControllerConfig m_config;
     QTcpSocket m_relayTcpSocket;
