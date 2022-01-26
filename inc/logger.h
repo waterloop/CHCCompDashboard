@@ -6,24 +6,25 @@
 
 
 class Logger : public QObject {
-    Q_OBJECT //what does this do?
+    Q_OBJECT
 
 public:
-    QString outputType_ = "console"; //default to the console?
+    enum outputType {
+        Console     = 0,
+        File        = 1
+    };
+    Q_ENUM(outputType);
+
+    outputType output_ = Console;
     QString fileName_ = "waterloop_desktop_log_"
             + QDateTime::currentDateTime().toString("yyyy_MM_dd_HH_mm");
 
-//    enum outputType {
-//        File,
-//        Console
-//    };
-
-explicit Logger(QString outputType) { //is explicit necessary?
-    outputType_ = outputType;
+explicit Logger(outputType output) {
+    output_ = output;
 };
 
-explicit Logger(QString outputType, QString fileName) {
-    outputType_ = outputType;
+explicit Logger(outputType output, QString fileName) {
+    output_ = output;
     fileName_ = fileName;
 };
 
