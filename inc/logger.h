@@ -3,6 +3,10 @@
 #include <QObject>
 #include <QString>
 #include <QDateTime>
+#include <QtGlobal>
+#include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 
 class Logger : public QObject {
@@ -17,7 +21,7 @@ public:
 
     outputType output_ = Console;
     QString fileName_ = "waterloop_desktop_log_"
-            + QDateTime::currentDateTime().toString("yyyy_MM_dd_HH_mm");
+            + QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss");
 
 explicit Logger(outputType output) {
     output_ = output;
