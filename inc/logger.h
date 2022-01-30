@@ -7,37 +7,56 @@
 #include <QDebug>
 #include <QFile>
 #include <QTextStream>
+#include <cctype>
 
 
 class Logger : public QObject {
     Q_OBJECT
 
-public:
-    enum outputType {
-        Console     = 0,
-        File        = 1
-    };
-    Q_ENUM(outputType);
-
-    outputType output_ = Console;
+protected:
     QString fileName_ = "waterloop_desktop_log_"
-            + QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss");
+            + QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm_ss");
 
-explicit Logger(outputType output) {
-    output_ = output;
-};
+    virtual void writeInfo(QString msg);
+    virtual void writeWarning(QString msg);
+    virtual void writeError(QString msg);
 
-explicit Logger(outputType output, QString fileName) {
-    output_ = output;
-    fileName_ = fileName;
-};
+public:
+    explicit Logger(QString fileName);
+
+    static Logger* CreateFileLogger();
+    static Logger* CreateConsoleLogger();
 
 public slots:
-    void log_error(QString msg);
+    void logError(QString msg);
 
-    void log_info(QString msg);
+    void logInfo(QString msg);
 
-    void log_debug(QString msg);
+    void logDebug(QString msg);
+};
+
+
+//derived classes
+class ConsoleLogger : public Logger {
+    Q_OBJECT
+
+public:
+    ConsoleLogger();
+
+    void writeInfo(QString msg);
+    void writeWarning(QString msg);
+    void writeError(QString msg);
+};
+
+class FileLogger : public Logger {
+    Q_OBJECT
+
+public:
+    FileLogger();
+
+    void writeInfo(QString msg);
+    void writeWarning(QString msg);
+    void writeError(QString msg);
 };
 
 #endif // LOGGER_H
