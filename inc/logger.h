@@ -12,9 +12,9 @@ class Logger : public QObject {
     Q_OBJECT
 
 protected:
-    virtual void writeInfo(QString msg);
-    virtual void writeWarning(QString msg);
-    virtual void writeError(QString msg);
+    virtual void writeInfo(QString msg) = 0;
+    virtual void writeWarning(QString msg) = 0;
+    virtual void writeError(QString msg) = 0;
 
 public:
     static Logger* CreateConsoleLogger();
@@ -34,6 +34,7 @@ class ConsoleLogger : public Logger {
 public:
     ConsoleLogger();
 
+protected:
     void writeInfo(QString msg);
     void writeWarning(QString msg);
     void writeError(QString msg);
@@ -46,6 +47,7 @@ class FileLogger : public Logger {
 public:
     explicit FileLogger(QString fileName);
 
+protected:
     void writeInfo(QString msg);
     void writeWarning(QString msg);
     void writeError(QString msg);
