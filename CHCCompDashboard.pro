@@ -1,6 +1,7 @@
 QT += quick
 
-CONFIG += c++2a
+CONFIG += c++11
+QMAKE_CXXFLAGS += /std:c++latest
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -11,6 +12,7 @@ SOURCES += \
     src/livedatamodel/livedatanode.cpp \
     src/bmsmodel.cpp \
     src/guicontroller.cpp \
+    src/logger.cpp \
     src/main.cpp \
     src/motorcontrolmodel.cpp \
     src/networkcontroller/relayudpcontroller.cpp \
@@ -42,6 +44,7 @@ HEADERS += \
     inc/guicontroller.h \
     inc/livedatamodel/livedatamodelinput.h \
     inc/livedatamodel/livedatanode.h \
+    inc/logger.h \
     inc/motorcontrolmodel.h \
     inc/networkcontroller/networkcontroller.h \
     inc/networkcontroller/relaytcpcontroller.h \
