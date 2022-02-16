@@ -13,6 +13,7 @@
 #define RELAY_BOARD_MOCK_CAN_REQUEST "SEND MOCK CAN\r\n"
 #define RELAY_BOARD_DEFAULT_PORT 8080
 #define DEV_HOST "127.0.0.1" // loopback
+//#define DEV_HOST "192.168.1.141" // Pi from the context of Waterloop Router
 //#define DEV_HOST "129.97.181.138" // was the pi at one point
 //#define DEV_HOST "raspberrypi.local"
 

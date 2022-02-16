@@ -136,7 +136,7 @@ Window {
                     pod.requestedState = PodStates.Armed
                     break
                 case "AutopilotState":
-                    pod.requestedState = PodStates.Autopilot
+                    pod.requestedState = PodStates.AutoPilot
                     break;
                 case "BrakingState":
                     pod.requestedState = PodStates.Braking

@@ -26,6 +26,10 @@ NetworkController::NetworkController(PodController* podController, QObject *pare
 
     connect(podController, &PodController::sig_requestedStateChanged,
             &m_relayUdpController, &RelayUdpController::slot_updateMessageRequestedState);
+
+    connect(podController, &PodController::sig_recoveryDetected, [=]() {
+        this->disconnectFromRelayBoard();
+    });
 }
 
 NetworkController::~NetworkController() {}
