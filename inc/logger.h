@@ -31,9 +31,6 @@ public slots:
 class ConsoleLogger : public Logger {
     Q_OBJECT
 
-public:
-    ConsoleLogger();
-
 protected:
     void writeInfo(QString msg);
     void writeWarning(QString msg);
