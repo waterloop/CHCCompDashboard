@@ -31,13 +31,10 @@ public slots:
 class ConsoleLogger : public Logger {
     Q_OBJECT
 
-public:
-    ConsoleLogger();
-
 protected:
-    void writeInfo(QString msg);
-    void writeWarning(QString msg);
-    void writeError(QString msg);
+    virtual void writeInfo(QString msg) override;
+    virtual void writeWarning(QString msg) override;
+    virtual void writeError(QString msg) override;
 };
 
 class FileLogger : public Logger {
@@ -48,9 +45,9 @@ public:
     explicit FileLogger(QString fileName);
 
 protected:
-    void writeInfo(QString msg);
-    void writeWarning(QString msg);
-    void writeError(QString msg);
+    virtual void writeInfo(QString msg) override;
+    virtual void writeWarning(QString msg) override;
+    virtual void writeError(QString msg) override;
 };
 
 #endif // LOGGER_H
