@@ -12,6 +12,9 @@ NetworkController::NetworkController(PodController* podController, QObject *pare
     connect(&m_relayUdpController, &RelayUdpController::sig_dataReceived,
             podController, &PodController::slot_handlePodMessage);
 
+    connect(&m_relayUdpController, &RelayUdpController::sig_dataReceived,
+            podController, &PodController::slot_handlePodTelemetry);
+
     connect(&m_relayUdpController, &RelayUdpController::sig_relayBoardTimedOut, [=] () {
         this->disconnectFromRelayBoard();
     });
