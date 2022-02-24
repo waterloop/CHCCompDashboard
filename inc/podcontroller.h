@@ -35,6 +35,7 @@ public:
     void setRequestedState(const PodStates::e_PodState &requestedState);
 public slots:
     void slot_handlePodMessage(QJsonObject podMessage); // Connects to the UDP Conntroller
+    void slot_handlePodTelemetry(QJsonObject podMessage); // Store data in the TSDB
 
 private:
     BmsModel* m_bmsData;                    // Stores Data relavent to the bms system
@@ -63,6 +64,17 @@ private:
         TELEMETRY,
         TELEMETRY_TIMESTAMP,
         // TELEMETRY FIELDS
+        BATTERY_PACK_CURRENT,
+        AVERAGE_CELL_TEMPERATURE,
+        IGBT_TEMPERATURE,
+        MOTOR_VOLTAGE,
+        BATTERY_PACK_VOLTAGE,
+        BUCK_TEMPERATURE,
+        BMS_CURRENT,
+        LINK_CAP_VOLTAGE,
+        MOTOR_CURRENT,
+        BATTERY_CURRENT,
+        BATTERY_VOLTAGE,
         SPEED,
         TORCHIC_1,
         TORCHIC_2,

@@ -174,3 +174,14 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
         }
     }
 }
+
+void PodController::slot_handlePodTelemetry(QJsonObject podMessage)
+{
+//    qDebug() << "Received Message" << podMessage;
+    for (QString key : podMessage.keys())
+    {
+        switch (m_fieldHash.value(key)) {
+            case TELEMETRY: {}
+        }
+    }
+}
