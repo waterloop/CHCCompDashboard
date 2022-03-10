@@ -20,6 +20,7 @@ PodController::PodController(QObject *parent) : QObject(parent),
     m_fieldHash.insert(QString("telemetry_timestamp"), FieldName::TELEMETRY_TIMESTAMP);
     m_fieldHash.insert(QString("recovering"), FieldName::RECOVERING);
     m_fieldHash.insert(QString("speed"), FieldName::SPEED);
+    m_fieldHash.insert(QString("battery_pack_voltage"), FieldName::BATTERY_PACK_VOLTAGE);
     m_liveData.insertData(*m_bmsData);
 
     connect(this, &PodController::sig_currentStateChanged,
@@ -120,6 +121,7 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
         switch (m_fieldHash.value(key)) {
         case CURRENT_STATE: {
             QJsonValue value = podMessage.value(key);
+            qDebug() << "Current State" << value;
             if (value.isDouble()) {
                 int default_value{static_cast<int>(PodStates::e_PodState::Invalid)};
                 setCurrentState(PodStates::from_int(value.toInt(default_value)));
@@ -132,13 +134,15 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
 //            qDebug() << "Errno Value in Pod Message: " << podMessage.value(key);
         }break;
         case PENDING_NEXT_STATE: {
-            QJsonValue value = podMessage.value(key);
-            if (value.isDouble()) {
-                int default_value{static_cast<int>(PodStates::e_PodState::Invalid)};
-                setRequestedState(PodStates::from_int(value.toInt(default_value)));
-            } else {
-                setRequestedState(PodStates::e_PodState::Invalid);
-            }
+//            /// This does not does work and might not be needed
+//            QJsonValue value = podMessage.value(key);
+//            if (value.isDouble()) {
+//                int default_value{static_cast<int>(PodStates::e_PodState::Invalid)};
+//                PodStates::e_PodState pending_next_state = PodStates::from_int(value.toInt(default_value));
+//                if (pending_next_state == getCurrentState()) {
+
+//                }
+//            }
         }break;
         case RECOVERING: {
             // TODO Implement
@@ -147,7 +151,7 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
             QJsonValue value = podMessage.value(key);
             if (value.isObject()) {
                 QJsonObject telemetry = value.toObject();
-                for (QString key : telemetry.keys())
+                for (const QString &key : telemetry.keys())
                 {
                     switch (m_fieldHash.value(key)) {
                     case SPEED: {
@@ -158,8 +162,12 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
                             qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
                         }
                     } break;
+                    case BATTERY_PACK_VOLTAGE: {
+                        QJsonValue val = telemetry.value(key);
+                        qDebug() << "BATTERY_PACK_VOLTAGE" << val;
+                    }break;
                     default:
-                        qDebug() << "ERROR: Unhandled Key in Telemetry Data\nKey Received: " << key;
+                        // qDebug() << "ERROR: Unhandled Key in Telemetry Data\nKey Received: " << key;
                         break;
                     }
                 }

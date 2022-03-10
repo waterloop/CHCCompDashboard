@@ -127,19 +127,21 @@ Window {
                 }
             }
             onStateSelected: {
+                console.log("State Selected")
+                console.log(newState)
                 if (!network.relayBoardConnected) return; // Don't try to change states if the relay board isn't connected
                 switch (newState) {
                 case "LvReadyState":
-                    pod.requestedState = PodStates.LowVoltage
-                    break
+                    pod.requestedState = PodStates.LowVoltage;
+                    break;
                 case "HvReadyState":
-                    pod.requestedState = PodStates.Armed
-                    break
+                    pod.requestedState = PodStates.Armed;
+                    break;
                 case "AutopilotState":
-                    pod.requestedState = PodStates.Autopilot
+                    pod.requestedState = PodStates.Autopilot;
                     break;
                 case "BrakingState":
-                    pod.requestedState = PodStates.Braking
+                    pod.requestedState = PodStates.Braking;
                     break;
                 case "RestingState":
                 default:

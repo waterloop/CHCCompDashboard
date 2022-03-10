@@ -26,10 +26,11 @@ public slots:
      * Attempts to connect to a udp port on the relay board
      * At a given port
      */
-    void slot_connectToRelayBoard(port_t udp_port);
+    void slot_connectToRelayBoard(port_t udp_bind_port, port_t udp_connect_port);
     void slot_disconnectFromRelayBoard();
     void slot_updateMessageRequestedState(PodStates::e_PodState requested_state);
     void slot_updateMessageTimeStamp(qint64 timestamp);
+    void slot_handleSocketTimer();
 
 signals:
     void sig_dataReceived(QJsonObject podData);
@@ -49,7 +50,7 @@ private:
     QTimer m_timer;
     quint8 m_timeout_counter;
 
-    void sendMessage(const QByteArray message);
+    void sendMessage();
     void updateMessage();
 private slots:
     /**
