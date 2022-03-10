@@ -43,13 +43,25 @@ Rectangle {
                 anchors.topMargin: 8
                 anchors.rightMargin: 8
 
-                height: 8
-                width: 8
+                height: 16
+                width: 16
                 border.color: 'black'
                 border.width: 2
 
                 Image {
-                    source: 'qrc:/assets/checkmark.svg'
+                    source: '../assets/checkmark.svg'
+                    anchors {
+                        bottom: parent.bottom
+                        left: parent.left
+                    }
+
+                    height: 24
+                    width: 24
+                    sourceSize {
+                        width: 24
+                        height: 24
+                    }
+                    opacity: selected
                 }
             }
 
@@ -68,7 +80,7 @@ Rectangle {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.5}
+    D{i:0;formeditorZoom:3}
 }
 ##^##*/
 

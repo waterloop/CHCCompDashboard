@@ -81,6 +81,8 @@ signals:
     void sig_torchic1Changed();
     void sig_torchic2Changed();
 
+    void sig_recoveryDetected(); // Disconnect from the pod
+
     // Telemetry Data signals
     void sig_podSpeedAvailable(const int speed);
     void sig_torchic1DataAvailable(float temp1, float temp2);

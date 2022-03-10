@@ -134,18 +134,13 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
 //            qDebug() << "Errno Value in Pod Message: " << podMessage.value(key);
         }break;
         case PENDING_NEXT_STATE: {
-//            /// This does not does work and might not be needed
-//            QJsonValue value = podMessage.value(key);
-//            if (value.isDouble()) {
-//                int default_value{static_cast<int>(PodStates::e_PodState::Invalid)};
-//                PodStates::e_PodState pending_next_state = PodStates::from_int(value.toInt(default_value));
-//                if (pending_next_state == getCurrentState()) {
-
-//                }
-//            }
+            // Handle Pending Next state
         }break;
         case RECOVERING: {
-            // TODO Implement
+            QJsonValue value = podMessage.value(key);
+            if (value.isBool() && value.toBool()) {
+
+            }
         }break;
         case TELEMETRY: {
             QJsonValue value = podMessage.value(key);
