@@ -45,7 +45,7 @@ signals:
      * Emmited when the network controller successfully
      * connects to the relay board.
      */
-    void sig_relayBoardConnected(port_t udp_port);
+    void sig_relayBoardConnected(port_t udp_bind_port, port_t udp_connect_port);
 
     /**
      * @brief sig_relayBoardDisconnected

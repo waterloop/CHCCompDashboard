@@ -18,7 +18,7 @@ RelayTcpController::RelayTcpController(QObject* parent, struct RelayTcpControlle
             this, &RelayTcpController::slot_handleRelayTcpSocketErrorOccured);
 
     connect(&m_relayTcpSocket, &QAbstractSocket::connected,
-            this, &RelayTcpController::slot_handleRelayTcpSocketConnected);
+            this, &RelayTcpController::slot_handleRelayTcpSocketConnected, Qt::ConnectionType::QueuedConnection);
 
     connect(&m_relayTcpSocket, &QAbstractSocket::readyRead,
             this, &RelayTcpController::slot_handleRelayTcpSocketReadyRead);
@@ -102,10 +102,10 @@ void RelayTcpController::slot_handleRelayTcpSocketReadyRead()
     QByteArray response = m_relayTcpSocket.readAll();
 //    qDebug() << "Response Received" << response;
     QRegularExpressionMatch okMatch = okMessage.match(response);
-    /// Full Message Will be of the Form "OK [0-9][0-9][0-9][0-9] | ERROR [a-zA-Z \.]* | DISCONNECTED"
+    /// Full Message Will be of the Form "OK [0-9][0-9][0-9][0-9] [0-9][0-9][0-9][0-9] | ERROR [a-zA-Z \.]* | DISCONNECTED"
     if (okMatch.hasMatch()) {
-        response.remove(0, okMatch.capturedLength());
-        emit sig_relayBoardConnected(response.toUShort());
+        QList<QByteArray> options = response.split(' ');
+        emit sig_relayBoardConnected(options.at(1).toUShort(), options.at(2).toUShort());
     } else {
         QRegularExpressionMatch disconnectedMatch = disconnectedMessage.match(response);
         if (disconnectedMatch.hasMatch()) {

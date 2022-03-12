@@ -64,6 +64,7 @@ private:
         TELEMETRY_TIMESTAMP,
         // TELEMETRY FIELDS
         SPEED,
+        BATTERY_PACK_VOLTAGE,
         TORCHIC_1,
         TORCHIC_2,
         PRESSURE_HIGH,
