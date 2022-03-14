@@ -8,6 +8,7 @@
 #include "livedatamodel/livedatamodel.h"
 #include "common.h"
 #include "pressuresenssormodel.h"
+#include "database.h"
 
 class PodController : public QObject
 {
@@ -51,6 +52,8 @@ private:
     PodStates::e_PodState m_currentState;
     PodStates::e_PodState m_requestedState;
 
+    Database* telemetrydb;
+
     /**
      * @brief The FieldName enum
      * FieldName is a mapping from any key that can occur in a podMessage, reguardless of the structure of the data structure
@@ -64,7 +67,7 @@ private:
         TELEMETRY,
         TELEMETRY_TIMESTAMP,
         // TELEMETRY FIELDS
-        BATTERY_PACK_CURRENT,
+        BATTERY_PACK_CURRENT = 1,
         AVERAGE_CELL_TEMPERATURE,
         IGBT_TEMPERATURE,
         MOTOR_VOLTAGE,

@@ -1,4 +1,5 @@
 QT += quick
+QT += sql
 
 CONFIG += c++11
 QMAKE_CXXFLAGS += /std:c++latest
@@ -8,6 +9,7 @@ QMAKE_CXXFLAGS += /std:c++latest
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/database.cpp \
     src/livedatamodel/livedatamodel.cpp \
     src/livedatamodel/livedatanode.cpp \
     src/bmsmodel.cpp \
@@ -40,6 +42,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     inc/bmsmodel.h \
     inc/common.h \
+    inc/database.h \
     inc/errorcontroller.h \
     inc/guicontroller.h \
     inc/livedatamodel/livedatamodelinput.h \
