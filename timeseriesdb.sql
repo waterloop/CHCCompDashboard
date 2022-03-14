@@ -10,7 +10,7 @@ CREATE TABLE telemetry_fields
 CREATE TABLE telemetry
 (
 	field_id int NOT NULL,
-	telemetry_data int NOT NULL,
+	telemetry_data float NOT NULL,
 	datetime timestamp NOT NULL
 );
 	
