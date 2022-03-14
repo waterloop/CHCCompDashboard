@@ -3,8 +3,8 @@ CREATE DATABASE timeseries_db;
 CREATE TABLE telemetry_fields
 (
 	field_id serial NOT NULL,
-    	field varchar(255) NOT NULL,
-    	PRIMARY KEY (field_id)
+	field varchar(255) NOT NULL,
+	PRIMARY KEY (field_id)
 );
 
 CREATE TABLE telemetry
