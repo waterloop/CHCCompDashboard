@@ -20,7 +20,22 @@ PodController::PodController(QObject *parent) : QObject(parent),
     m_fieldHash.insert(QString("telemetry_timestamp"), FieldName::TELEMETRY_TIMESTAMP);
     m_fieldHash.insert(QString("recovering"), FieldName::RECOVERING);
     m_fieldHash.insert(QString("speed"), FieldName::SPEED);
-    //TODO: insert all the added fields from fieldName enum to fieldHash
+    m_fieldHash.insert(QString("battery_pack_current"), FieldName::BATTERY_PACK_CURRENT);
+    m_fieldHash.insert(QString("average_cell_temperature"), FieldName::AVERAGE_CELL_TEMPERATURE);
+    m_fieldHash.insert(QString("igbt_temperature"), FieldName::IGBT_TEMPERATURE);
+    m_fieldHash.insert(QString("motor_voltage"), FieldName::MOTOR_VOLTAGE);
+    m_fieldHash.insert(QString("battery_pack_voltage"), FieldName::BATTERY_PACK_VOLTAGE);
+    m_fieldHash.insert(QString("buck_temperature"), FieldName::BUCK_TEMPERATURE);
+    m_fieldHash.insert(QString("bms_current"), FieldName::BMS_CURRENT);
+    m_fieldHash.insert(QString("link_cap_voltage"), FieldName::LINK_CAP_VOLTAGE);
+    m_fieldHash.insert(QString("motor_current"), FieldName::MOTOR_CURRENT);
+    m_fieldHash.insert(QString("battery_current"), FieldName::BATTERY_CURRENT);
+    m_fieldHash.insert(QString("battery_voltage"), FieldName::BATTERY_VOLTAGE);
+    m_fieldHash.insert(QString("torchic_1"), FieldName::TORCHIC_1);
+    m_fieldHash.insert(QString("torchic_2"), FieldName::TORCHIC_2);
+    m_fieldHash.insert(QString("pressure_high"), FieldName::PRESSURE_HIGH);
+    m_fieldHash.insert(QString("pressure_low_1"), FieldName::PRESSURE_LOW_1);
+    m_fieldHash.insert(QString("pressure_low_2"), FieldName::PRESSURE_LOW_2);
 
     m_liveData.insertData(*m_bmsData);
 
