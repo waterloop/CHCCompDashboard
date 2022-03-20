@@ -67,7 +67,7 @@ private:
         TELEMETRY,
         TELEMETRY_TIMESTAMP,
         // TELEMETRY FIELDS
-        BATTERY_PACK_CURRENT = 1,
+        BATTERY_PACK_CURRENT = 1, //aligns with lookup table in the tsdb
         AVERAGE_CELL_TEMPERATURE,
         IGBT_TEMPERATURE,
         MOTOR_VOLTAGE,

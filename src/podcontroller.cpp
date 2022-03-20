@@ -205,61 +205,63 @@ void PodController::slot_handlePodTelemetry(QJsonObject podMessage)
                     for (QString key : telemetry.keys())
                     {
                         QJsonValue val = telemetry.value(key);
-                        float telemetry_data = val.toDouble();
-                        QString datetime = podMessage.value("telemetry_timestamp").toString();
+                        if (val != NULL) {
+                            float telemetry_data = val.toDouble();
+                            QString datetime = podMessage.value("telemetry_timestamp").toString();
 
-                        switch (m_fieldHash.value(key)) {
-                        case BATTERY_PACK_CURRENT: {
-                            telemetrydb->insertData(BATTERY_PACK_CURRENT, telemetry_data, datetime);
-                        } break;
-                        case AVERAGE_CELL_TEMPERATURE: {
-                            telemetrydb->insertData(AVERAGE_CELL_TEMPERATURE, telemetry_data, datetime);
-                        } break;
-                        case IGBT_TEMPERATURE: {
-                            telemetrydb->insertData(IGBT_TEMPERATURE, telemetry_data, datetime);
-                        } break;
-                        case MOTOR_VOLTAGE: {
-                            telemetrydb->insertData(MOTOR_VOLTAGE, telemetry_data, datetime);
-                        } break;
-                        case BATTERY_PACK_VOLTAGE: {
-                            telemetrydb->insertData(BATTERY_PACK_VOLTAGE, telemetry_data, datetime);
-                        } break;
-                        case BUCK_TEMPERATURE: {
-                            telemetrydb->insertData(BUCK_TEMPERATURE, telemetry_data, datetime);
-                        } break;
-                        case BMS_CURRENT: {
-                            telemetrydb->insertData(BMS_CURRENT, telemetry_data, datetime);
-                        } break;
-                        case LINK_CAP_VOLTAGE: {
-                            telemetrydb->insertData(LINK_CAP_VOLTAGE, telemetry_data, datetime);
-                        } break;
-                        case MOTOR_CURRENT: {
-                            telemetrydb->insertData(MOTOR_CURRENT, telemetry_data, datetime);
-                        } break;
-                        case BATTERY_CURRENT: {
-                            telemetrydb->insertData(BATTERY_CURRENT, telemetry_data, datetime);
-                        } break;
-                        case BATTERY_VOLTAGE: {
-                            telemetrydb->insertData(BATTERY_VOLTAGE, telemetry_data, datetime);
-                        } break;
-                        case SPEED: {
-                            telemetrydb->insertData(SPEED, telemetry_data, datetime);
-                        } break;
-                        case TORCHIC_1: {
-                            telemetrydb->insertData(TORCHIC_1, telemetry_data, datetime);
-                        } break;
-                        case TORCHIC_2: {
-                            telemetrydb->insertData(TORCHIC_2, telemetry_data, datetime);
-                        } break;
-                        case PRESSURE_HIGH: {
-                            telemetrydb->insertData(PRESSURE_HIGH, telemetry_data, datetime);
-                        } break;
-                        case PRESSURE_LOW_1: {
-                            telemetrydb->insertData(PRESSURE_LOW_1, telemetry_data, datetime);
-                        } break;
-                        case PRESSURE_LOW_2: {
-                            telemetrydb->insertData(PRESSURE_LOW_2, telemetry_data, datetime);
-                        } break;
+                            switch (m_fieldHash.value(key)) {
+                            case BATTERY_PACK_CURRENT: {
+                                telemetrydb->insertData(BATTERY_PACK_CURRENT, telemetry_data, datetime);
+                            } break;
+                            case AVERAGE_CELL_TEMPERATURE: {
+                                telemetrydb->insertData(AVERAGE_CELL_TEMPERATURE, telemetry_data, datetime);
+                            } break;
+                            case IGBT_TEMPERATURE: {
+                                telemetrydb->insertData(IGBT_TEMPERATURE, telemetry_data, datetime);
+                            } break;
+                            case MOTOR_VOLTAGE: {
+                                telemetrydb->insertData(MOTOR_VOLTAGE, telemetry_data, datetime);
+                            } break;
+                            case BATTERY_PACK_VOLTAGE: {
+                                telemetrydb->insertData(BATTERY_PACK_VOLTAGE, telemetry_data, datetime);
+                            } break;
+                            case BUCK_TEMPERATURE: {
+                                telemetrydb->insertData(BUCK_TEMPERATURE, telemetry_data, datetime);
+                            } break;
+                            case BMS_CURRENT: {
+                                telemetrydb->insertData(BMS_CURRENT, telemetry_data, datetime);
+                            } break;
+                            case LINK_CAP_VOLTAGE: {
+                                telemetrydb->insertData(LINK_CAP_VOLTAGE, telemetry_data, datetime);
+                            } break;
+                            case MOTOR_CURRENT: {
+                                telemetrydb->insertData(MOTOR_CURRENT, telemetry_data, datetime);
+                            } break;
+                            case BATTERY_CURRENT: {
+                                telemetrydb->insertData(BATTERY_CURRENT, telemetry_data, datetime);
+                            } break;
+                            case BATTERY_VOLTAGE: {
+                                telemetrydb->insertData(BATTERY_VOLTAGE, telemetry_data, datetime);
+                            } break;
+                            case SPEED: {
+                                telemetrydb->insertData(SPEED, telemetry_data, datetime);
+                            } break;
+                            case TORCHIC_1: {
+                                telemetrydb->insertData(TORCHIC_1, telemetry_data, datetime);
+                            } break;
+                            case TORCHIC_2: {
+                                telemetrydb->insertData(TORCHIC_2, telemetry_data, datetime);
+                            } break;
+                            case PRESSURE_HIGH: {
+                                telemetrydb->insertData(PRESSURE_HIGH, telemetry_data, datetime);
+                            } break;
+                            case PRESSURE_LOW_1: {
+                                telemetrydb->insertData(PRESSURE_LOW_1, telemetry_data, datetime);
+                            } break;
+                            case PRESSURE_LOW_2: {
+                                telemetrydb->insertData(PRESSURE_LOW_2, telemetry_data, datetime);
+                            } break;
+                            }
                         }
                     }
                 }
