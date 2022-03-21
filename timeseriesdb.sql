@@ -13,6 +13,9 @@ CREATE TABLE telemetry
 	telemetry_data float NOT NULL,
 	datetime timestamp NOT NULL
 );
+
+--converts telemetry into a time series table
+SELECT create_hypertable('telemetry', 'datetime');
 	
 INSERT INTO telemetry_fields 
 	(field) 
