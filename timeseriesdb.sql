@@ -11,7 +11,8 @@ CREATE TABLE telemetry
 (
 	field_id int NOT NULL,
 	telemetry_data float NOT NULL,
-	datetime timestamp NOT NULL
+	datetime timestamp NOT NULL,
+	FOREIGN KEY (field_id) REFERENCES telemetry_fields(field_id)
 );
 
 --converts telemetry into a time series table
