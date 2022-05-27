@@ -89,7 +89,7 @@ void LiveDataModel::insertData(LiveDataModelInput& input)
     for (QList<QSharedPointer<LiveDataNode>>::iterator runner = newData.begin(); runner != newData.end(); runner++)
     {
         m_data.append(*runner);
-        QObject::connect(runner->get(), &LiveDataNode::sig_dataUpdated, [=]() {
+        QObject::connect(runner->get(), &LiveDataNode::sig_dataUpdated, [&]() {
             emit dataChanged(createIndex(m_data.length()-1, 0), createIndex(m_data.length()-1, 0));
         });
     }

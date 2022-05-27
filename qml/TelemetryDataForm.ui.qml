@@ -27,9 +27,13 @@ Item {
             font.family: "Tahoma"
             textFormat: Text.PlainText
             fontSizeMode: Text.HorizontalFit
-            anchors.horizontalCenter: parent.horizontalCenter
             anchors {
                 top: parent.top
+                topMargin: 8
+                leftMargin: 8
+                left: parent.left
+                rightMargin: 8
+                right: parent.right
             }
             color: "white"
         }
@@ -37,13 +41,18 @@ Item {
         Text {
             id: data_value_text
             color: "#ffffff"
-            text: dataValue
+            text: dataValue.toFixed(4)
             font.pixelSize: 60
             horizontalAlignment: Text.AlignHCenter
             font.weight: Font.Light
             font.family: "Tahoma"
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: data_name_text.bottom
+            anchors {
+                top: parent.top
+                topMargin: 50
+                bottom: parent.bottom
+                bottomMargin: 50
+            }
         }
 
         Text {
@@ -55,7 +64,8 @@ Item {
             font.weight: Font.Light
             font.family: "Tahoma"
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: data_value_text.bottom
+            anchors.top: data_value_text.top
+            anchors.topMargin: 70
         }
 
         GradientBar {

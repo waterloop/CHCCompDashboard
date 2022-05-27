@@ -57,7 +57,7 @@ Item {
     }
 
     Text {
-        text: ((max - min) / 14) * 0
+        text: ((max - min) / 14) * 0 + min
         anchors.top: tick_1.bottom
         color: "white"
     }
@@ -78,7 +78,7 @@ Item {
     }
 
     Text {
-        text: ((max - min) / 14) * 1
+        text: Math.round(((max - min) / 14) * 1)+ min
         anchors.top: tick_3.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_3.horizontalCenter
@@ -100,7 +100,7 @@ Item {
         x: (300 / 28) * 4
     }
     Text {
-        text: ((max - min) / 14) * 2
+        text: Math.round(((max - min) / 14) * 2)+ min
         anchors.top: tick_5.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_5.horizontalCenter
@@ -122,7 +122,7 @@ Item {
         x: (298 / 28) * 6
     }
     Text {
-        text: ((max - min) / 14) * 3
+        text: Math.round(((max - min) / 14) * 3)+ min
         anchors.top: tick_7.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_7.horizontalCenter
@@ -143,7 +143,7 @@ Item {
         x: (298 / 28) * 8
     }
     Text {
-        text: ((max - min) / 14) * 4
+        text: Math.round(((max - min) / 14) * 4)+ min
         anchors.top: tick_9.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_9.horizontalCenter
@@ -164,7 +164,7 @@ Item {
         x: (298 / 28) * 10
     }
     Text {
-        text: ((max - min) / 14) * 5
+        text: Math.round(((max - min) / 14) * 5)+ min
         anchors.top: tick_11.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_11.horizontalCenter
@@ -185,7 +185,7 @@ Item {
         x: (298 / 28) * 12
     }
     Text {
-        text: ((max - min) / 14) * 6
+        text: Math.round(((max - min) / 14) * 6)+ min
         anchors.top: tick_13.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_13.horizontalCenter
@@ -206,7 +206,7 @@ Item {
         x: (298 / 28) * 14
     }
     Text {
-        text: ((max - min) / 14) * 7
+        text: Math.round(((max - min) / 14) * 7)+ min
         anchors.top: tick_15.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_15.horizontalCenter
@@ -227,7 +227,7 @@ Item {
         x: (298 / 28) * 16
     }
     Text {
-        text: ((max - min) / 14) * 8
+        text: Math.round(((max - min) / 14) * 8)+ min
         anchors.top: tick_17.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_17.horizontalCenter
@@ -248,7 +248,7 @@ Item {
         x: (298 / 28) * 18
     }
     Text {
-        text: ((max - min) / 14) * 9
+        text: Math.round(((max - min) / 14) * 9)+ min
         anchors.top: tick_19.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_19.horizontalCenter
@@ -269,7 +269,7 @@ Item {
         x: (298 / 28) * 20
     }
     Text {
-        text: ((max - min) / 14) * 10
+        text: Math.round(((max - min) / 14) * 10)+ min
         anchors.top: tick_21.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_21.horizontalCenter
@@ -290,7 +290,7 @@ Item {
         x: (298 / 28) * 22
     }
     Text {
-        text: ((max - min) / 14) * 11
+        text: Math.round(((max - min) / 14) * 11)+ min
         anchors.top: tick_23.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_23.horizontalCenter
@@ -311,7 +311,7 @@ Item {
         x: (298 / 28) * 24
     }
     Text {
-        text: ((max - min) / 14) * 12
+        text: Math.round(((max - min) / 14) * 12)+ min
         anchors.top: tick_25.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_25.horizontalCenter
@@ -332,7 +332,7 @@ Item {
         x: (298 / 28) * 26
     }
     Text {
-        text: ((max - min) / 14) * 13
+        text: Math.round(((max - min) / 14) * 13)+ min
         anchors.top: tick_27.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_27.horizontalCenter
@@ -353,7 +353,7 @@ Item {
         x: (298 / 28) * 28
     }
     Text {
-        text: ((max - min) / 14) * 14
+        text: Math.round(((max - min) / 14) * 14)+ min
         anchors.top: tick_29.bottom
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: tick_29.horizontalCenter

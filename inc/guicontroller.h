@@ -2,32 +2,31 @@
 #define GUICONTROLLER_H
 
 #include <QObject>
-#include <QQmlApplicationEngine>
+#include <QString>
+#include <QVector>
 
-/*
- * class GuiController
- * The Gui Controller is responsible for connecting backend C++ code with
- * the frontend QML Code. It does this through the qml engine reference.
+/**
+ * @brief The GuiController class
+ * Stores all of the state for the frontend
  */
-class GuiController : public QObject
-{
+class GuiController : public QObject {
     Q_OBJECT
+    Q_PROPERTY(uint currentPage READ getCurrentPage NOTIFY sig_currentPageChanged)
+
 public:
-    explicit GuiController(QQmlApplicationEngine *engine, QObject *parent = nullptr);
+    explicit GuiController(QObject* parent=nullptr);
+    ~GuiController();
 
-    // Using the Engine load all of the singleton controllers
-    void loadBackendControllers();
+    uint getCurrentPage() const;
 
-    // Uses the Engine to load all backend DataModels
-    void loadBackendModels();
+    Q_INVOKABLE void cycleCurrentPage(uint maxItems );
 
-    // Loads the common namespace into QML engine
-    void loadCommonNameSpace();
-
-    // register custom classes as datatypes in the meta system
-    void registerCustomMetaTypes();
+//public slots:
 private:
-    QQmlApplicationEngine *m_engine;
+    uint m_currentPageIndex;
+//private slots:
+signals:
+    void sig_currentPageChanged();
 };
 
 #endif // GUICONTROLLER_H

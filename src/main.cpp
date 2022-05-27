@@ -1,12 +1,14 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "guicontroller.h"
+#include "qmlcontroller.h"
 #include "podcontroller.h"
+#include "guicontroller.h"
 #include "common.h"
 #include "networkcontroller/networkcontroller.h"
 
 PodController *pod;
 NetworkController *network_controller;
+GuiController *gui_controller;
 
 /*
  * This is the entry point for the application.
@@ -22,9 +24,10 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    GuiController guiController(&engine);
+    QmlController qmlController(&engine);
     pod = new PodController();
     network_controller = new NetworkController(pod);
+    gui_controller = new GuiController();
 
     /// Defining DEV_SANDBOX enables us to use a seperate qml file
     /// as the base for the GUI. This way we can test individual components
@@ -42,14 +45,14 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    /// Call guiController methods here
+    /// Call qmlController methods here
     /// These methods are reponsible for
     /// exposing different aspects of the backend
     /// to qml files
-    guiController.loadBackendControllers();
-    guiController.loadBackendModels();
-    guiController.loadCommonNameSpace();
-    guiController.registerCustomMetaTypes();
+    qmlController.loadBackendControllers();
+    qmlController.loadBackendModels();
+    qmlController.loadCommonNameSpace();
+    qmlController.registerCustomMetaTypes();
 
     engine.load(url);
 

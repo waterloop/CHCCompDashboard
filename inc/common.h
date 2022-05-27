@@ -95,9 +95,14 @@
 /*********************************
  *   Pressure Sensor CONSTANTS   *
  *********************************/
-#define INITIAL_PRESSURE_HIGH 100   // psi?
-#define INITIAL_PRESSURE_LOW 3      // psi?
+#define INITIAL_PRESSURE_HIGH 300   // psi?
+#define INITIAL_PRESSURE_LOW 50      // psi?
 #define PRESURE_TIMEOUT_MS (1000*7) // seconds
+
+#define MAX_PRESSURE_HIGH 400
+#define MAX_PRESSURE_LOW 100
+#define MIN_PRESSURE_HIGH 0
+#define MIN_PRESSURE_LOW 0
 
 /******************************
  * Singletons for Controllers *
@@ -114,6 +119,9 @@ extern PodController *pod;
  */
 class NetworkController;
 extern NetworkController *network_controller;
+
+class GuiController;
+extern GuiController *gui_controller;
 
 // The common Namespace for common type and enum definitions
 namespace common {

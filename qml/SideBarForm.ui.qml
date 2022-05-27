@@ -75,7 +75,7 @@ Item {
             font.bold: false
             font.family: "Tahoma"
             anchors.centerIn: parent
-            text: "Edit Dashboard"
+            text: "View All Live Data"
             font.letterSpacing: 0.6
             font.pixelSize: 24
         }

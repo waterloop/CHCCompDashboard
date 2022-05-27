@@ -7,10 +7,10 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/guicontroller.cpp \
     src/livedatamodel/livedatamodel.cpp \
     src/livedatamodel/livedatanode.cpp \
     src/bmsmodel.cpp \
-    src/guicontroller.cpp \
     src/logger.cpp \
     src/main.cpp \
     src/motorcontrolmodel.cpp \
@@ -18,6 +18,8 @@ SOURCES += \
     src/networkcontroller/networkcontroller.cpp \
     src/networkcontroller/relaytcpcontroller.cpp \
     src/podcontroller.cpp \
+    src/pressuresenssormodel.cpp \
+    src/qmlcontroller.cpp \
     src/torchicmodel.cpp
 
 RESOURCES += qml.qrc \
@@ -52,5 +54,6 @@ HEADERS += \
     inc/podstate.h \
     inc/livedatamodel/livedatamodel.h \
     inc/pressuresenssormodel.h \
+    inc/qmlcontroller.h \
     inc/torchicmodel.h
 

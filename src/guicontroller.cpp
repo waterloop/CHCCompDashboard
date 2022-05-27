@@ -1,69 +1,17 @@
 #include "guicontroller.h"
-#include "podcontroller.h"
-#include "motorcontrolmodel.h"
-#include "networkcontroller/networkcontroller.h"
-#include <QQmlContext>
-#include "common.h"
 
-GuiController::GuiController(
-        QQmlApplicationEngine *engine,
-        QObject* parent
-        )
-    : QObject(parent),
-      m_engine(engine)
-{
+QVector<QString> pageNames = {"main_screen", "sensor_screen"};
+
+GuiController::GuiController(QObject* parent)
+    : QObject(parent), m_currentPageIndex(0) {}
+
+GuiController::~GuiController() {}
+
+uint GuiController::getCurrentPage() const {
+    return m_currentPageIndex;
 }
 
-/*!
- * \brief GuiController::loadBackendControllers
- * Add the backend Controllers as QML properties
- * which can be accessed through the keys assigned to
- * them directly in QML.
- */
-void GuiController::loadBackendControllers()
-{
-    m_engine->rootContext()->setContextProperty("pod", pod);
-    m_engine->rootContext()->setContextProperty("network", network_controller);
-}
-
-/*!
- * \brief GuiController::loadBackendModels
- * Backend models are data interfaces which
- * can be used to fill a QML View.
- */
-void GuiController::loadBackendModels()
-{
-    m_engine->rootContext()->setContextProperty("liveData", pod->getLiveData());
-}
-
-/*!
- * \brief GuiController::loadCommonNameSpace
- * Loading the common namespace into the qml
- * space enables us to reference enums that are
- * defined in the common namespace inside of QML.
- */
-void GuiController::loadCommonNameSpace()
-{
-    qmlRegisterUncreatableMetaObject(
-        common::staticMetaObject,   // Meta Object Created by Q_NAMESPACE macro
-        "waterloop.common",         // import statement
-        1, 0,                       // major and minor version of import
-        "Common",                   // Name in QML
-        "Error: Common is registered as an uncreatable namespace" // Error if someone tries to create an object from the common namespace
-    );
-    qmlRegisterUncreatableType<PodStates>(
-                "waterloop.common",
-                1,0,
-                "PodStates",
-                "Cannot Create Podstates in QML");
-}
-
-void GuiController::registerCustomMetaTypes()
-{
-    qmlRegisterUncreatableType<MotorControlModel>(
-        "waterloop.common",         // uri / import statement
-        1,0,                        // major, minor verion of import
-        "MotorControlModel",        // Name in QML
-        "Error: MotorControlModel is registered as an uncreatable type"
-    );
+void GuiController::cycleCurrentPage(uint maxItems) {
+    m_currentPageIndex = (m_currentPageIndex + 1) % maxItems;
+    emit sig_currentPageChanged();
 }

@@ -56,20 +56,32 @@ private:
      * Paired with the fieldHash, it will allow us to parse and handle the keys from the podMessages
      */
     enum FieldName {
+
+        // TELEMETRY FIELDS
+        BATTERY_PACK_CURRENT = 1, //aligns with lookup table in the tsdb
+        AVERAGE_CELL_TEMPERATURE,
+        IGBT_TEMPERATURE,
+        MOTOR_VOLTAGE,
+        BATTERY_PACK_VOLTAGE,
+        BUCK_TEMPERATURE,
+        BMS_CURRENT,
+        LINK_CAP_VOLTAGE,
+        MOTOR_CURRENT,
+        BATTERY_CURRENT,
+        BATTERY_VOLTAGE,
+        SPEED,
+        TORCHIC_1,
+        TORCHIC_2,
+        PRESSURE_HIGH,
+        PRESSURE_LOW_1,
+        PRESSURE_LOW_2,
+        // OTHER FIELDS
         CURRENT_STATE,
         ERRNO,
         PENDING_NEXT_STATE,
         RECOVERING,
         TELEMETRY,
-        TELEMETRY_TIMESTAMP,
-        // TELEMETRY FIELDS
-        SPEED,
-        BATTERY_PACK_VOLTAGE,
-        TORCHIC_1,
-        TORCHIC_2,
-        PRESSURE_HIGH,
-        PRESSURE_LOW_1,
-        PRESSURE_LOW_2
+        TELEMETRY_TIMESTAMP
     };
 
     QHash<QString, FieldName> m_fieldHash;
@@ -80,6 +92,9 @@ signals:
     void sig_mcDataChanged();
     void sig_torchic1Changed();
     void sig_torchic2Changed();
+    void sig_pressureHighChanged();
+    void sig_pressureLow1Changed();
+    void sig_pressureLow2Changed();
 
     void sig_recoveryDetected(); // Disconnect from the pod
 
@@ -87,6 +102,19 @@ signals:
     void sig_podSpeedAvailable(const int speed);
     void sig_torchic1DataAvailable(float temp1, float temp2);
     void sig_torchic2DataAvailable(float temp1, float temp2);
+    void sig_batteryPackCurrentAvailable(float current);
+    void sig_averageCellTemperatureAvailable(float temp);
+    void sig_igbtTempAvailable(float temp);
+    void sig_motorVoltageAvailable(float motorVoltage);
+    void sig_buckTemperatureAvailable(float temp);
+    void sig_bmsCurrentAvailable(float amps);
+    void sig_linkCapVoltageAvailable(float voltage);
+    void sig_motorCurrentAvailable(float current);
+    void sig_batteryCurrentAvailable(float current);
+    void sig_batteryVoltageAvailable(float votlage);
+    void sig_pressureHighDataAvailable(float pressure);
+    void sig_pressureLow1DataAvailable(float pressure);
+    void sig_pressureLow2DataAvailable(float pressure);
 };
 
 #endif // PODCONTROLLER_H

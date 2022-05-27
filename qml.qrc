@@ -20,5 +20,6 @@
         <file>qml/SideBarForm.ui.qml</file>
         <file>qml/EditDashboardDialog.qml</file>
         <file>qml/EditDashboardDialogForm.ui.qml</file>
+        <file>qml/DeviceListItem.qml</file>
     </qresource>
 </RCC>

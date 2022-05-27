@@ -101,7 +101,7 @@ void RelayUdpController::updateMessage()
     object.insert("requested_state", QJsonValue::fromVariant((int)m_requested_state));
     object.insert("most_recent_timestamp", QJsonValue::fromVariant((int)m_timestamp));
     m_message = QJsonDocument(object).toJson();
-    qDebug() << " Updated Message " << m_message;
+//    qDebug() << " Updated Message " << m_message;
 }
 
 
