@@ -4,8 +4,8 @@
 PodController::PodController(QObject *parent) : QObject(parent),
     m_bmsData(new BmsModel(this)),
     m_mcData(new MotorControlModel(this)),
-    m_torchic1(new TorchicModel(this)),
-    m_torchic2(new TorchicModel(this)),
+    m_torchic1(new TorchicModel(QString("Torchic 1"), this)),
+    m_torchic2(new TorchicModel(QString("Torchic 2"), this)),
     m_pressureHigh(new PressureSensorModel(QString("High Pressure"), INITIAL_PRESSURE_HIGH, OperationalEnvelope{ .max= MAX_PRESSURE_HIGH, .min=MIN_PRESSURE_HIGH }, this)),
     m_pressureLow1(new PressureSensorModel(QString("Low Pressure 1"), INITIAL_PRESSURE_LOW, OperationalEnvelope{ .max= MAX_PRESSURE_LOW, .min=MIN_PRESSURE_LOW }, this)),
     m_pressureLow2(new PressureSensorModel(QString("Low Pressure 2"), INITIAL_PRESSURE_LOW, OperationalEnvelope{ .max= MAX_PRESSURE_LOW, .min=MIN_PRESSURE_LOW }, this)),
@@ -37,6 +37,7 @@ PodController::PodController(QObject *parent) : QObject(parent),
     m_fieldHash.insert(QString("pressure_high"), FieldName::PRESSURE_HIGH);
     m_fieldHash.insert(QString("pressure_low_1"), FieldName::PRESSURE_LOW_1);
     m_fieldHash.insert(QString("pressure_low_2"), FieldName::PRESSURE_LOW_2);
+    m_fieldHash.insert(QString("state_of_charge"), FieldName::STATE_OF_CHARGE);
     /* Setup the live data model */
     m_liveData.insertData(*m_bmsData);
     m_liveData.insertData(*m_mcData);
@@ -52,6 +53,28 @@ PodController::PodController(QObject *parent) : QObject(parent),
 
     connect(this, &PodController::sig_requestedStateChanged,
             this, &PodController::sig_transitioningChanged);
+
+    /* Pass data to m_bms */
+    connect(this, &PodController::sig_batteryPackCurrentAvailable,
+            m_bmsData, &BmsModel::slot_bmsBatteryPackCurrentReceived);
+
+    connect(this, &PodController::sig_batteryPackVoltageAvailable,
+            m_bmsData, &BmsModel::slot_bmsBatteryPackVoltageReceived);
+
+    connect(this, &PodController::sig_averageCellTemperatureAvailable,
+            m_bmsData, &BmsModel::slot_bmsCellTemperatureReceived);
+
+    connect(this, &PodController::sig_stateOfChargeAvailable,
+            m_bmsData, &BmsModel::slot_stateOfChargeReveived);
+
+    connect(this, &PodController::sig_buckTemperatureAvailable,
+            m_bmsData, &BmsModel::slot_buckTemperatureReceived);
+
+    connect(this, &PodController::sig_bmsCurrentAvailable,
+            m_bmsData, &BmsModel::slot_bmsCurrentReceived);
+
+    connect(this, &PodController::sig_linkCapVoltageAvailable,
+            m_bmsData, &BmsModel::slot_mcDcLinkCapacitorReceived);
 
     // Pass data to m_mcData
     connect(this,       &PodController::sig_podSpeedAvailable,
@@ -331,8 +354,21 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
                     } break;
                     case BATTERY_PACK_VOLTAGE: {
                         QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_batteryPackVoltageAvailable(val.toInt());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
                         qDebug() << "BATTERY_PACK_VOLTAGE" << val;
                     }break;
+                    case STATE_OF_CHARGE: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_stateOfChargeAvailable(val.toDouble());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
                     default:
                         // qDebug() << "ERROR: Unhandled Key in Telemetry Data\nKey Received: " << key;
                         break;

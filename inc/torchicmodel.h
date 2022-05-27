@@ -23,7 +23,7 @@ class TorchicModel : public QObject, public LiveDataModelInput
     Q_PROPERTY(float temp1 READ getTemperature1 NOTIFY sig_temperatureUpdated)
     Q_PROPERTY(float temp2 READ getTemperature2 NOTIFY sig_temperatureUpdated)
 public:
-    TorchicModel(QObject *parent = nullptr);
+    TorchicModel(QString name, QObject *parent = nullptr);
     virtual ~TorchicModel();
 
     /// GETTERS
@@ -42,6 +42,8 @@ private:
 
     OperationalEnvelope m_tempurature1SafeRange;
     OperationalEnvelope m_tempurature2SafeRange;
+
+    QString m_name;
 
 signals:
     void sig_temperatureUpdated();

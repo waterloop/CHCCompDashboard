@@ -1,11 +1,12 @@
 # include "torchicmodel.h"
 
-TorchicModel::TorchicModel(QObject *parent)
+TorchicModel::TorchicModel(QString name, QObject *parent)
     : QObject(parent),
       m_temperature1(INTITIAL_TORCHIC_TEMP, TORCHIC_TIMEOUT_MS),
       m_temperature2(INTITIAL_TORCHIC_TEMP, TORCHIC_TIMEOUT_MS),
       m_tempurature1SafeRange({ .max= TORCHIC_MAX_TEMP, .min=TORCHIC_MIN_TEMP }),
-      m_tempurature2SafeRange({ .max= TORCHIC_MAX_TEMP, .min=TORCHIC_MIN_TEMP })
+      m_tempurature2SafeRange({ .max= TORCHIC_MAX_TEMP, .min=TORCHIC_MIN_TEMP }),
+      m_name(name)
 {
     connect(this, &TorchicModel::sig_temperature1Updated,
             this, &TorchicModel::sig_temperatureUpdated);
@@ -48,7 +49,6 @@ void TorchicModel::slot_temperaturesAvailable(float temp1, float temp2)
     this->m_temperature2.updateState(temp2);
 
     if (state_changed) {
-        qDebug() << "TORCHIC TEMP UPDATED";
         emit sig_temperatureUpdated();
         emit sig_temperature1Updated(temp1);
         emit sig_temperature2Updated(temp2);
@@ -69,8 +69,8 @@ QList<QSharedPointer<LiveDataNode>> TorchicModel::enumerate() const
 //                m_tempurature1SafeRange,
 //                &TorchicModel::sig_temperatureUpdated,
 //                this);
-    responseList.append(QSharedPointer<LiveDataNode>(new LiveDataNode(QString("Temperature Data 1"), getTemperature1(), common::CELCIUS, m_tempurature1SafeRange, &TorchicModel::sig_temperature1Updated, this)));
-    responseList.append(QSharedPointer<LiveDataNode>(new LiveDataNode(QString("Temperature Data 2"), getTemperature2(), common::CELCIUS, m_tempurature2SafeRange, &TorchicModel::sig_temperature2Updated, this)));
+    responseList.append(QSharedPointer<LiveDataNode>(new LiveDataNode(m_name + QString("Temperature Data 1"), getTemperature1(), common::CELCIUS, m_tempurature1SafeRange, &TorchicModel::sig_temperature1Updated, this)));
+    responseList.append(QSharedPointer<LiveDataNode>(new LiveDataNode(m_name + QString("Temperature Data 2"), getTemperature2(), common::CELCIUS, m_tempurature2SafeRange, &TorchicModel::sig_temperature2Updated, this)));
 
 //    responseList.append(QSharedPointer<LiveDataNode>(new LiveDataNode(QString("Battery Pack Voltage"), getBatteryPackVoltage(), common::VOLT, m_batterPackVoltageSafeRange, &BmsModel::sig_batteryPackVoltageUpdated, this)));
 //    responseList.append(QSharedPointer<LiveDataNode>(new LiveDataNode(QString("Cell Temperature"), getCellTempurature(), common::CELCIUS, m_cellTemperatureSafeRange, &BmsModel::sig_cellTemperatureUpdated, this)));

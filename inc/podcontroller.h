@@ -75,6 +75,7 @@ private:
         PRESSURE_HIGH,
         PRESSURE_LOW_1,
         PRESSURE_LOW_2,
+        STATE_OF_CHARGE,
         // OTHER FIELDS
         CURRENT_STATE,
         ERRNO,
@@ -103,6 +104,7 @@ signals:
     void sig_torchic1DataAvailable(float temp1, float temp2);
     void sig_torchic2DataAvailable(float temp1, float temp2);
     void sig_batteryPackCurrentAvailable(float current);
+    void sig_batteryPackVoltageAvailable(float voltage);
     void sig_averageCellTemperatureAvailable(float temp);
     void sig_igbtTempAvailable(float temp);
     void sig_motorVoltageAvailable(float motorVoltage);
@@ -115,6 +117,7 @@ signals:
     void sig_pressureHighDataAvailable(float pressure);
     void sig_pressureLow1DataAvailable(float pressure);
     void sig_pressureLow2DataAvailable(float pressure);
+    void sig_stateOfChargeAvailable(float percent);
 };
 
 #endif // PODCONTROLLER_H
