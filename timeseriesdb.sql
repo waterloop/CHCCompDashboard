@@ -1,4 +1,7 @@
 CREATE DATABASE timeseries_db;
+\c timeseries_db
+CREATE EXTENSION IF NOT EXISTS timescaledb;
+
 
 CREATE TABLE telemetry_fields
 (
@@ -38,3 +41,5 @@ VALUES
 	('PRESSURE_HIGH'),
 	('PRESSURE_LOW_1'),
 	('PRESSURE_LOW_2');
+
+\q

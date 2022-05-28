@@ -1,0 +1,21 @@
+version: "3.7"
+ services:
+  app:
+    build: ./docker/app
+    command: sh -c "make all && ./a.out"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    stdin_open: true 
+    tty: true      
+  db:  
+    build: ./docker/db
+    working_dir: /app
+    ports:
+      - "5431:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./:/app
+    environment:
+      POSTGRES_PASSWORD: password
+    
