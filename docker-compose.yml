@@ -1,8 +1,8 @@
 version: "3.7"
- services:
+services:
   app:
     build: ./docker/app
-    command: sh -c "make all && ./a.out"
+    # command: sh -c "make all && ./a.out"
     working_dir: /app
     volumes:
       - ./:/app
@@ -14,8 +14,9 @@ version: "3.7"
     ports:
       - "5431:5432"
     volumes:
-      - ./data:/var/lib/postgresql/data
       - ./:/app
+      - ./db/scripts:/docker-entrypoint-initdb.d/
+      - ./db/sqlFiles:/sqlFiles
     environment:
       POSTGRES_PASSWORD: password
     
