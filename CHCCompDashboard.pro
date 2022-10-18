@@ -20,6 +20,7 @@ SOURCES += \
     src/podcontroller.cpp \
     src/pressuresenssormodel.cpp \
     src/qmlcontroller.cpp \
+    src/roboteqmodel.cpp \
     src/torchicmodel.cpp
 
 RESOURCES += qml.qrc \
@@ -55,5 +56,6 @@ HEADERS += \
     inc/livedatamodel/livedatamodel.h \
     inc/pressuresenssormodel.h \
     inc/qmlcontroller.h \
+    inc/roboteqmodel.h \
     inc/torchicmodel.h
 

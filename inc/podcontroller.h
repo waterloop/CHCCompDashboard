@@ -8,6 +8,7 @@
 #include "livedatamodel/livedatamodel.h"
 #include "common.h"
 #include "pressuresenssormodel.h"
+#include "roboteqmodel.h"
 
 class PodController : public QObject
 {
@@ -18,6 +19,7 @@ class PodController : public QObject
     Q_PROPERTY(MotorControlModel* motorController MEMBER m_mcData NOTIFY sig_mcDataChanged)
     Q_PROPERTY(TorchicModel* torchic1 MEMBER m_torchic1 NOTIFY sig_torchic1Changed)
     Q_PROPERTY(TorchicModel* torchic2 MEMBER m_torchic2 NOTIFY sig_torchic2Changed)
+    Q_PROPERTY(RoboteqModel* roboteq MEMBER m_roboteqModel NOTIFY sig_roboteqDataChanged)
 
 public:
     explicit PodController(QObject *parent = nullptr);
@@ -44,6 +46,8 @@ private:
     PressureSensorModel* m_pressureHigh;    // Stores Data for the High Pressure Sensor
     PressureSensorModel* m_pressureLow1;    // Stores Data for the first Low Pressure Sensor
     PressureSensorModel* m_pressureLow2;    // Stores Data for the second Low Pressure Sensor
+
+    RoboteqModel* m_roboteqModel;
 
     LiveDataModel m_liveData;   // QML friendly model which provides a list of up to date information from various pod systems
 
@@ -76,6 +80,13 @@ private:
         PRESSURE_LOW_1,
         PRESSURE_LOW_2,
         STATE_OF_CHARGE,
+        RT_SPEED_1,
+        RT_SPEED_2,
+        RT_CURRENT_1,
+        RT_CURRENT_2,
+        RT_TEMP_MCU,
+        RT_TEMP_1,
+        RT_TEMP_2,
         // OTHER FIELDS
         CURRENT_STATE,
         ERRNO,
@@ -118,6 +129,16 @@ signals:
     void sig_pressureLow1DataAvailable(float pressure);
     void sig_pressureLow2DataAvailable(float pressure);
     void sig_stateOfChargeAvailable(float percent);
+
+    // ROBOTEQ data signals
+    void sig_roboteqMotor1SpeedAvailable(int speed);
+    void sig_roboteqMotor2SpeedAvailable(int speed);
+    void sig_roboteqBattery1CurrentAvailable(int current);
+    void sig_roboteqBattery2CurrentAvailable(int current);
+    void sig_roboteqMCUTemp(int temp);
+    void sig_roboteqSensor1Temp(int temp);
+    void sig_roboteqSensor2Temp(int temp);
+    void sig_roboteqDataChanged();
 };
 
 #endif // PODCONTROLLER_H

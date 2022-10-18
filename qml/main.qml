@@ -67,6 +67,10 @@ Window {
         onEditDashboardPressed: {
             gui.cycleCurrentPage(display_container.count);
         }
+
+        onTriggerSystemFault: {
+            pod.requestedState = PodStates.SystemFailure
+        }
     }
 
     Rectangle {
@@ -148,7 +152,7 @@ Window {
                             pod.requestedState = PodStates.Armed;
                             break;
                         case "AutopilotState":
-                            pod.requestedState = PodStates.Autopilot;
+                            pod.requestedState = PodStates.AutoPilot;
                             break;
                         case "BrakingState":
                             pod.requestedState = PodStates.Braking;
@@ -163,7 +167,7 @@ Window {
                 Speedometer {
                     id: speedometer
                     width: 80
-                    speed: pod.motorController.podSpeed
+                    speed: pod.roboteq.speed1
                     anchors {
                         right: data_grid.right
                         bottom: pod_state_viewer.bottom
@@ -188,16 +192,32 @@ Window {
                     anchors.verticalCenter: parent.verticalCenter
 
                     TelemetryDataForm {
+                        dataName: "Robot Temp Sensor 1"
+                        dataValue: pod.roboteq.temp1
 
+                        dataMax: 100
+                        dataMin: 0
                     }
                     TelemetryDataForm {
+                        dataName: "Robot Temp Sensor 2"
+                        dataValue: pod.roboteq.temp2
 
+                        dataMax: 100
+                        dataMin: 0
                     }
                     TelemetryDataForm {
+                        dataName: "Robot Battery Current 1"
+                        dataValue: pod.roboteq.current1
 
+                        dataMax: 100
+                        dataMin: 0
                     }
                     TelemetryDataForm {
+                        dataName: "Robot Battery Current 2"
+                        dataValue: pod.roboteq.current2
 
+                        dataMax: 100
+                        dataMin: 0
                     }
                 }
             }

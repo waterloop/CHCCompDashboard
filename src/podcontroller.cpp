@@ -9,6 +9,7 @@ PodController::PodController(QObject *parent) : QObject(parent),
     m_pressureHigh(new PressureSensorModel(QString("High Pressure"), INITIAL_PRESSURE_HIGH, OperationalEnvelope{ .max= MAX_PRESSURE_HIGH, .min=MIN_PRESSURE_HIGH }, this)),
     m_pressureLow1(new PressureSensorModel(QString("Low Pressure 1"), INITIAL_PRESSURE_LOW, OperationalEnvelope{ .max= MAX_PRESSURE_LOW, .min=MIN_PRESSURE_LOW }, this)),
     m_pressureLow2(new PressureSensorModel(QString("Low Pressure 2"), INITIAL_PRESSURE_LOW, OperationalEnvelope{ .max= MAX_PRESSURE_LOW, .min=MIN_PRESSURE_LOW }, this)),
+    m_roboteqModel(new RoboteqModel(this)),
     m_liveData(this),
     m_currentState(PodStates::e_PodState::Resting),
     m_fieldHash()
@@ -38,6 +39,15 @@ PodController::PodController(QObject *parent) : QObject(parent),
     m_fieldHash.insert(QString("pressure_low_1"), FieldName::PRESSURE_LOW_1);
     m_fieldHash.insert(QString("pressure_low_2"), FieldName::PRESSURE_LOW_2);
     m_fieldHash.insert(QString("state_of_charge"), FieldName::STATE_OF_CHARGE);
+
+    m_fieldHash.insert(QString("roboteq_motor_1_speed"), FieldName::RT_SPEED_1);
+    m_fieldHash.insert(QString("roboteq_motor_2_speed"), FieldName::RT_SPEED_2);
+    m_fieldHash.insert(QString("roboteq_motor_1_battery_amps"), FieldName::RT_CURRENT_1);
+    m_fieldHash.insert(QString("roboteq_motor_2_battery_amps"), FieldName::RT_CURRENT_2);
+    m_fieldHash.insert(QString("roboteq_mcu_temp"), FieldName::RT_TEMP_MCU);
+    m_fieldHash.insert(QString("roboteq_sensor_1_temp"), FieldName::RT_TEMP_1);
+    m_fieldHash.insert(QString("roboteq_sensor_2_temp"), FieldName::RT_TEMP_2);
+
     /* Setup the live data model */
     m_liveData.insertData(*m_bmsData);
     m_liveData.insertData(*m_mcData);
@@ -46,6 +56,7 @@ PodController::PodController(QObject *parent) : QObject(parent),
     m_liveData.insertData(*m_pressureHigh);
     m_liveData.insertData(*m_pressureLow1);
     m_liveData.insertData(*m_pressureLow2);
+    m_liveData.insertData(*m_roboteqModel);
 
     /* Connections */
     connect(this, &PodController::sig_currentStateChanged,
@@ -122,6 +133,40 @@ PodController::PodController(QObject *parent) : QObject(parent),
             this, &PodController::sig_pressureLow1Changed);
     connect(m_pressureLow2, &PressureSensorModel::sig_pressureUpdated,
             this, &PodController::sig_pressureLow2Changed);
+
+    // send data to roboteq model
+    connect(this, &PodController::sig_roboteqMotor1SpeedAvailable,
+            m_roboteqModel, &RoboteqModel::slot_speed1Available);
+    connect(this, &PodController::sig_roboteqMotor2SpeedAvailable,
+            m_roboteqModel, &RoboteqModel::slot_speed2Available);
+    connect(this, &PodController::sig_roboteqBattery1CurrentAvailable,
+            m_roboteqModel, &RoboteqModel::slot_batteryCurrent1Available);
+    connect(this, &PodController::sig_roboteqMotor2SpeedAvailable,
+            m_roboteqModel, &RoboteqModel::slot_batteryCurrent2Available);
+    connect(this, &PodController::sig_roboteqMCUTemp,
+            m_roboteqModel, &RoboteqModel::slot_mcuTempAvailable);
+    connect(this, &PodController::sig_roboteqSensor1Temp,
+            m_roboteqModel, &RoboteqModel::slot_sensor1TempAvailable);
+    connect(this, &PodController::sig_roboteqSensor1Temp,
+            m_roboteqModel, &RoboteqModel::slot_sensor2TempAvailable);
+
+    // UPDATE QML
+    connect(this, &PodController::sig_roboteqMotor1SpeedAvailable,
+            this, &PodController::sig_roboteqDataChanged);
+    connect(this, &PodController::sig_roboteqMotor2SpeedAvailable,
+            this, &PodController::sig_roboteqDataChanged);
+    connect(this, &PodController::sig_roboteqBattery1CurrentAvailable,
+            this, &PodController::sig_roboteqDataChanged);
+    connect(this, &PodController::sig_roboteqMotor2SpeedAvailable,
+            this, &PodController::sig_roboteqDataChanged);
+    connect(this, &PodController::sig_roboteqMCUTemp,
+            this, &PodController::sig_roboteqDataChanged);
+    connect(this, &PodController::sig_roboteqSensor1Temp,
+            this, &PodController::sig_roboteqDataChanged);
+    connect(this, &PodController::sig_roboteqSensor1Temp,
+            this, &PodController::sig_roboteqDataChanged);
+
+
 }
 
 PodController::~PodController()
@@ -182,7 +227,7 @@ void PodController::setRequestedState(const PodStates::e_PodState &requestedStat
  */
 void PodController::slot_handlePodMessage(QJsonObject podMessage)
 {
-//    qDebug() << "Received Message" << podMessage;
+    qDebug() << "Received Message" << podMessage;
     for (QString key : podMessage.keys())
     {
         if (!m_fieldHash.contains(key)) {
@@ -365,6 +410,62 @@ void PodController::slot_handlePodMessage(QJsonObject podMessage)
                         QJsonValue val = telemetry.value(key);
                         if (val.isDouble()) {
                             emit sig_stateOfChargeAvailable(val.toDouble());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
+                    case RT_SPEED_1: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_roboteqMotor1SpeedAvailable(val.toInt());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
+                    case RT_SPEED_2: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_roboteqMotor2SpeedAvailable(val.toInt());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
+                    case RT_CURRENT_1: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_roboteqBattery1CurrentAvailable(val.toInt());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
+                    case RT_CURRENT_2: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_roboteqBattery2CurrentAvailable(val.toInt());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
+                    case RT_TEMP_MCU: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_roboteqMCUTemp(val.toInt());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
+                    case RT_TEMP_1: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_roboteqSensor1Temp(val.toInt());
+                        } else {
+                            qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
+                        }
+                    } break;
+                    case RT_TEMP_2: {
+                        QJsonValue val = telemetry.value(key);
+                        if (val.isDouble()) {
+                            emit sig_roboteqSensor2Temp(val.toInt());
                         } else {
                             qDebug() << "Error: Received a non numeric value for Pod speed\nValue Received: " << val;
                         }

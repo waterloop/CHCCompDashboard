@@ -8,6 +8,7 @@ Item {
     property alias connect_button_text: connect_button_text.text
     property alias background_color: background.color
     property alias change_dashboard_button_logic: change_dashboard_button_logic
+    property alias e_break_button_logic: e_break_button_logic
 
     Rectangle {
         id: background
@@ -78,6 +79,39 @@ Item {
             text: "View All Live Data"
             font.letterSpacing: 0.6
             font.pixelSize: 24
+        }
+    }
+
+    Rectangle {
+        id: e_break
+        height: 50
+        color: "#7071c5"
+        radius: 4
+        anchors {
+            left: parent.left
+            right: parent.right
+            leftMargin: 8
+            rightMargin: 8
+            top: change_dashboard_button.bottom
+            topMargin: 8
+        }
+        TapHandler {
+            id: e_break_button_logic
+        }
+
+        Text {
+            id: e_break_button_text
+            color: "#ffffff"
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            style: Text.Normal
+            font.underline: false
+            font.bold: false
+            font.family: "Tahoma"
+            anchors.centerIn: parent
+            text: "TRIGGER SYSTEM FAULT"
+            font.letterSpacing: 0.6
+            font.pixelSize: 20
         }
     }
 }

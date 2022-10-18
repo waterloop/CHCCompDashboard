@@ -20,8 +20,8 @@ using common::OperationalEnvelope;
 class LiveDataNode : public QObject {
     Q_OBJECT
 public:
-    template<typename T>
-    explicit LiveDataNode(QString name, QVariant data, common::Unit unit, OperationalEnvelope safeRange, void (T::*)(float), const T* signalCaller, QObject *parent=nullptr);
+    template<typename T, typename D>
+    explicit LiveDataNode(QString name, QVariant data, common::Unit unit, OperationalEnvelope safeRange, void (T::*)(D), const T* signalCaller, QObject *parent=nullptr);
 
     QString name;
     QVariant data;
@@ -35,8 +35,8 @@ signals:
     void sig_dataUpdated();
 };
 
-template <typename T>
-LiveDataNode::LiveDataNode(QString name, QVariant data, common::Unit unit, OperationalEnvelope safeRange, void (T::*signal)(float), const T* signalCaller, QObject *parent)
+template <typename T, typename D>
+LiveDataNode::LiveDataNode(QString name, QVariant data, common::Unit unit, OperationalEnvelope safeRange, void (T::*signal)(D), const T* signalCaller, QObject *parent)
     : QObject(parent),
       name(name),
       data(data),
